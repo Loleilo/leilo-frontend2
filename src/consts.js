@@ -1,0 +1,1 @@
+export const API_ENDPOINT="http://sunnylan.tk/Leilo-API/api.php";
