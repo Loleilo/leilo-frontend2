@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux'
-import {createListReducer} from 'reducers/uuidList'
+import {createFetchListReducer} from '../list'
 
 export default combineReducers({
-    atomGroups: createListReducer('atomGroups'),
-    atomValues: createListReducer('atomValues'),
+    atomGroups: createFetchListReducer('atomGroups'),
+    atomValues: createFetchListReducer('atomValues'),
 })

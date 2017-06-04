@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux'
-import * as states from 'src/reducers/states'
-import {createListReducer} from 'reducers/list'
-import {createSyncReducer} from 'reducers/sync'
+import * as states from '../states'
+import {createFetchListReducer} from "../list";
+import {createFetchSyncReducer} from "../sync";
 
 const loginReducer = function (state = states.LOGGED_OUT, action) {
     switch (action.type) {
@@ -17,11 +17,14 @@ const loginReducer = function (state = states.LOGGED_OUT, action) {
             return states.LOGGED_OUT;
         case "LOGOUT_REJECTED":
             return states.LOGGED_IN;
+        default:
+            return state;
     }
 };
 
 export default combineReducers({
     loginState: loginReducer,
-    userGroupPerms: createListReducer("userGroupPerms"),
-    username: createSyncReducer("username"),
+    userGroupPerms: createFetchListReducer("userGroupPerms"),
+    username: createFetchSyncReducer("username"),
+    groupsList: createFetchSyncReducer("groupsList"),
 })

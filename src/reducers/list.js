@@ -1,6 +1,5 @@
-import {createFetchSyncReducer, createPushFetchSyncReducer} from  'reducers/sync'
-
-function createFetchListReducer(objName, actionMapper = (action, newState, oldState) => {
+import {createFetchSyncReducer} from "./sync";
+export function createFetchListReducer(objName, actionMapper = (action, newState, oldState) => {
     newState[action.payload.uuid] = createFetchSyncReducer(objName)(oldState[action.payload.uuid], action);
 }) {
     return function (state = {}, action) {
@@ -33,5 +32,3 @@ function createFetchListReducer(objName, actionMapper = (action, newState, oldSt
 //         return state;
 //     };
 // }
-
-export {createFetchListReducer}

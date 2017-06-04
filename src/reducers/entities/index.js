@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux'
 
-import userReducer from 'user'
-import groupsReducer from 'groups'
-import atomsReducer from 'atoms'
+import userReducer from './user'
+import groupsReducer from './groups'
+import atomsReducer from './atoms'
 
 const tmp = combineReducers({
     user: userReducer,
@@ -15,5 +15,5 @@ export default function (state, action) {
         //clear data (not sure if this works)
         return tmp({}, action);
     }
-    return state;
+    return tmp(state, action);
 }

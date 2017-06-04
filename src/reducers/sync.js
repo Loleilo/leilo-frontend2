@@ -1,4 +1,4 @@
-import * as states from 'states'
+import * as states from './states'
 
 function createFetchSyncReducer(objName, valueReducer = (state, action) => action.payload.value) {
     return function (state = {
@@ -24,10 +24,11 @@ function createFetchSyncReducer(objName, valueReducer = (state, action) => actio
                     syncState: states.ERROR,
                     lastError: action.payload.lastError,
                 };
+            default:
+                return state;
         }
-        return {...state};
     };
-};
+}
 
 function createPushFetchSyncReducer(objName, valueReducer = (state, action) => action.payload.value) {
     return function (state = {
@@ -70,8 +71,9 @@ function createPushFetchSyncReducer(objName, valueReducer = (state, action) => a
                     syncState: states.ERROR,
                     lastError: action.payload.lastError,
                 };
+            default:
+                return state;
         }
-        return {...state};
     };
 }
 

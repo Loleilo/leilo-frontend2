@@ -35,6 +35,10 @@ model 2
 					value: 5,
 				}
 			}
+			groupsList:{
+				state: WRITING,
+				value:[uuid, ...],
+			},	
 		},
 		
 		groups:{
@@ -44,10 +48,6 @@ model 2
 					value: ["uuid of user", ...]
 				}
 			},
-			groupsList:{
-				state: WRITING,
-				value:[uuid, ...],
-			},	
 			groupAtomPerms: {
 				"groupuuid":{
 					"atomuuid":{
