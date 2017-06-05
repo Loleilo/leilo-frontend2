@@ -1,4 +1,4 @@
-import {postPromise, syncActionTemplate, FETCH} from './syncAction'
+import {postPromise, syncActionTemplate, pollingStartTemplate, FETCH, pollingStopTemplate} from './syncAction'
 
 export function login(params) {
     return function (dispatch) {
@@ -22,21 +22,18 @@ export function logout() {
     }
 }
 
-export const fetchGroupsList = syncActionTemplate("groupsList", "listGroups");
+const groupsListParams = ["groupsList", "listGroups", undefined, undefined, (getState)=>{
+    return getState().entities.user.groupsList
+}];
+export const fetchGroupsList = syncActionTemplate(...groupsListParams);
+export const pollGroupsListStart = pollingStartTemplate(...groupsListParams);
+export const pollGroupsListStop = pollingStopTemplate(...groupsListParams);
 
-export const fetchGroupPerms = syncActionTemplate("userGroupPerms", "getGroupPermissions", FETCH, (payload, params) => {
+const groupPermsParams = ["userGroupPerms", "getGroupPermissions", FETCH, (payload, params) => {
     return {value: payload, uuid: params.group_id}
-});
-
-//todo this doesn't even need to be part of state (i think)
-// export function pushGroupPerms(groupid, perms) {
-//     const objName = "userGroupPerms";
-//     return function (dispatch) {
-//         dispatch(action(PUSH, objName, PENDING, {uuid: groupid}));
-//         postPromise({group_id: groupid}).then((result) => {
-//             dispatch(action(PUSH, objName, FULFILLED, {uuid: groupid, value: result}))
-//         }).catch((err) => {
-//             dispatch(action(PUSH, objName, REJECTED, {uuid: groupid, lastError: err}))
-//         })
-//     }
-// }
+}, (getState)=>{
+    return getState().entities.user.userGroupPerms[params.uuid];
+}];
+export const fetchGroupPerms = syncActionTemplate(...groupsListParams);
+export const pollGroupPermsStart = pollingStartTemplate(...groupsListParams);
+export const pollGroupPermsStop = pollingStopTemplate(...groupsListParams);

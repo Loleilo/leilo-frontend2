@@ -9,7 +9,8 @@
     "redux-logger": "latest",
     "redux-thunk": "latest",
     "redux-promise-middleware": "latest",
-    "axios": "latest"
+    "axios": "latest",
+    "react-redux": "latest"
   },
   "devDependencies": {
     "react-scripts": "1.0.7"
