@@ -15,7 +15,7 @@ export const PUSH = "PUSH";
 export function actionTemplate(objName, apiCall, action = FETCH, customMapper = undefined) {
     return function (params) {
         return function (dispatch) {
-            dispatch(syncAction(action, objName, PENDING));
+            dispatch(syncAction(action, objName, PENDING, params, customMapper ? (payload)=>{return customMapper(payload, params)}:undefined));
             postPromise(apiCall, params).then((result) => {
                 dispatch(syncAction(action, objName, FULFILLED, result, customMapper ? (payload)=>{return customMapper(payload, params)}:undefined))
             }).catch(createCatcher(dispatch)).catch((err) => {

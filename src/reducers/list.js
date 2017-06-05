@@ -9,7 +9,7 @@ export function createFetchListReducer(objName, actionMapper = (action, newState
                 let newState = {
                     ...state
                 };
-                actionMapper(action, newState, state)
+                actionMapper(action, newState, state);
                 return newState;
             }
         return state;
