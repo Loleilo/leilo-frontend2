@@ -5,10 +5,13 @@ export function createFetchListReducer(objName, actionMapper = (action, newState
     return function (state = {}, action) {
         const splitType = action.type.split('_');
         if (splitType.length >= 2)
-            if (action.type[1] === objName)
-                return actionMapper(action, {
+            if (splitType[1] === objName) {
+                let newState = {
                     ...state
-                }, state);
+                };
+                actionMapper(action, newState, state)
+                return newState;
+            }
         return state;
     };
 }

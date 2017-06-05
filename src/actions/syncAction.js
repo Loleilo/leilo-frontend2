@@ -12,12 +12,12 @@ export const PUSH = "PUSH";
 
 
 //gotta love that 3rd order function
-export function actionTemplate(objName, apiCall, action = FETCH) {
+export function actionTemplate(objName, apiCall, action = FETCH, customMapper = undefined) {
     return function (params) {
         return function (dispatch) {
             dispatch(syncAction(action, objName, PENDING));
             postPromise(apiCall, params).then((result) => {
-                dispatch(syncAction(action, objName, FULFILLED, result))
+                dispatch(syncAction(action, objName, FULFILLED, result, customMapper ? (payload)=>{return customMapper(payload, params)}:undefined))
             }).catch(createCatcher(dispatch)).catch((err) => {
                 dispatch(syncAction(action, objName, REJECTED, {lastError: err}))
             })
@@ -40,9 +40,13 @@ export function postPromise(call, params = {}) {
     })
 }
 
-export function syncAction(action, obj, state, payload) {
+export function syncAction(action, obj, state, payload, payloadMapper = (payload) => {
+    return {
+        value: payload
+    }
+}) {
     return {
         type: `${action}_${obj}_${state}`,
-        payload: {value: payload}
+        payload: payloadMapper(payload),
     }
 }

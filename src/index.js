@@ -29,7 +29,7 @@ store.subscribe(() => {
     if (step === 2 && store.getState().entities.user.groupsList.syncState === states.READY) {
         step++;
         cG = store.getState().entities.user.groupsList.value[0];
-        store.dispatch(groups.fetchUsers({group_id: cG}));
+        store.dispatch(user.fetchGroupPerms({group_id: cG}));
     }
 
 });

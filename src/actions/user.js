@@ -1,4 +1,4 @@
-import {postPromise, actionTemplate} from './syncAction'
+import {postPromise, actionTemplate, FETCH} from './syncAction'
 
 export function login(params) {
     return function (dispatch) {
@@ -24,7 +24,9 @@ export function logout() {
 
 export const fetchGroupsList = actionTemplate("groupsList", "listGroups");
 
-export const fetchGroupPerms = actionTemplate("userGroupPerms", "getGroupPermissions");
+export const fetchGroupPerms = actionTemplate("userGroupPerms", "getGroupPermissions", FETCH, (payload, params) => {
+    return {value: payload, uuid: params.group_id}
+});
 
 //todo this doesn't even need to be part of state (i think)
 // export function pushGroupPerms(groupid, perms) {

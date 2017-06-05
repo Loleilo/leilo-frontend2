@@ -56,6 +56,12 @@ model 2
 					}
 				}
 			}
+			groupAtomsList:{
+				"groupuuid":{
+					state: LOADED,
+					value: ["uuid of atom", ...]
+				}
+			}
 		},
 		
 		atoms:{
@@ -73,18 +79,13 @@ model 2
 			}
 		},
 	}
+	
+	errors:[
+	]
 }
 
-an object can uploaded/fetched to server only when it has a state variable
-UNLOADED, 
-OAD_ERROR - unable to load, 
-LOADING - currently getting from server, 
-WRITING - currently writing to server, 
-POLLING - waiting for next fetch, 
-LOADED - loaded but not polling
-
 polled by pollercomponent
- - will traverse object and 
+ - will traverse polling list and refetch things
 
 //each action just corresponds to api
 
