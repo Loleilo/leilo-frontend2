@@ -1,5 +1,7 @@
 import axios from 'axios'
 import {API_ENDPOINT, CLIENT_API_VERSION} from "../consts";
+import SyncReturnError from "../errors/SyncReturnError";
+import createCatcher from '../errors/errorCatcher'
 
 export const PENDING = "PENDING";
 export const FULFILLED = "FULFILLED";
@@ -8,7 +10,22 @@ export const REJECTED = "REJECTED";
 export const FETCH = "FETCH";
 export const PUSH = "PUSH";
 
-export function postPromise(call, params={}) {
+
+//gotta love that 3rd order function
+export function actionTemplate(objName, apiCall, action = FETCH) {
+    return function (params) {
+        return function (dispatch) {
+            dispatch(syncAction(action, objName, PENDING));
+            postPromise(apiCall, params).then((result) => {
+                dispatch(syncAction(action, objName, FULFILLED, result))
+            }).catch(createCatcher(dispatch)).catch((err) => {
+                dispatch(syncAction(action, objName, REJECTED, {lastError: err}))
+            })
+        }
+    }
+}
+
+export function postPromise(call, params = {}) {
     return axios.post(API_ENDPOINT,
         {
             version: CLIENT_API_VERSION,
@@ -19,13 +36,13 @@ export function postPromise(call, params={}) {
         if (response.returnCode === 0)
             return response.returnData;
         else
-            throw new Error("Non-zero return code: Error code " + response.returnCode + " - " + response.returnData);
+            throw new SyncReturnError(response);
     })
 }
 
 export function syncAction(action, obj, state, payload) {
     return {
         type: `${action}_${obj}_${state}`,
-        payload: payload
+        payload: {value: payload}
     }
 }

@@ -11,4 +11,5 @@ const groupAtomPermsMapper = function (action, newState, oldState) {
 export default combineReducers({
     groupUsers: createFetchListReducer("groupUsers"),
     groupAtomPerms: createFetchListReducer("groupAtomPerms", groupAtomPermsMapper),
+    groupAtomsList: createFetchListReducer("groupAtomsList"),
 })
