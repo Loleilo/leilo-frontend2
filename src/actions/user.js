@@ -1,4 +1,4 @@
-import {postPromise, actionTemplate, FETCH} from './syncAction'
+import {postPromise, syncActionTemplate, FETCH} from './syncAction'
 
 export function login(params) {
     return function (dispatch) {
@@ -22,9 +22,9 @@ export function logout() {
     }
 }
 
-export const fetchGroupsList = actionTemplate("groupsList", "listGroups");
+export const fetchGroupsList = syncActionTemplate("groupsList", "listGroups");
 
-export const fetchGroupPerms = actionTemplate("userGroupPerms", "getGroupPermissions", FETCH, (payload, params) => {
+export const fetchGroupPerms = syncActionTemplate("userGroupPerms", "getGroupPermissions", FETCH, (payload, params) => {
     return {value: payload, uuid: params.group_id}
 });
 
@@ -32,11 +32,11 @@ export const fetchGroupPerms = actionTemplate("userGroupPerms", "getGroupPermiss
 // export function pushGroupPerms(groupid, perms) {
 //     const objName = "userGroupPerms";
 //     return function (dispatch) {
-//         dispatch(syncAction(PUSH, objName, PENDING, {uuid: groupid}));
+//         dispatch(action(PUSH, objName, PENDING, {uuid: groupid}));
 //         postPromise({group_id: groupid}).then((result) => {
-//             dispatch(syncAction(PUSH, objName, FULFILLED, {uuid: groupid, value: result}))
+//             dispatch(action(PUSH, objName, FULFILLED, {uuid: groupid, value: result}))
 //         }).catch((err) => {
-//             dispatch(syncAction(PUSH, objName, REJECTED, {uuid: groupid, lastError: err}))
+//             dispatch(action(PUSH, objName, REJECTED, {uuid: groupid, lastError: err}))
 //         })
 //     }
 // }

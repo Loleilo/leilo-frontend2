@@ -42,7 +42,7 @@ export function userActionsTest() {
 
 export function groupActionsTest() {
     console.log("Group Actions Test");
-    Promise.resolve().then(() => {
+    return Promise.resolve().then(() => {
         store.dispatch(user.login({username: "lol", password: "pass"}));
     }).then(delayPromise(REQ_DELAY)).then(() => {
         store.dispatch(user.fetchGroupsList());
@@ -65,7 +65,7 @@ export function groupActionsTest() {
 //todo sometimes request doesn't update fast enough, so it thinks its logged out
 export function atomActionsTest() {
     console.log("Atom Actions Test");
-    Promise.resolve().then(() => {
+    return Promise.resolve().then(() => {
         store.dispatch(user.login({username: "lol", password: "pass"}));
     }).then(delayPromise(REQ_DELAY)).then(() => {
         store.dispatch(user.fetchGroupsList());
@@ -85,7 +85,6 @@ export function atomActionsTest() {
 }
 
 export function runAll() {
-    userActionsTest();
-    groupActionsTest();
-    atomActionsTest();
+    // userActionsTest();
+    groupActionsTest().then(atomActionsTest);
 }

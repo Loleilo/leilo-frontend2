@@ -1,4 +1,5 @@
 import axios from 'axios'
+import syncAction from './action'
 import {API_ENDPOINT, CLIENT_API_VERSION} from "../consts";
 import SyncReturnError from "../errors/SyncReturnError";
 import createCatcher from '../errors/errorCatcher'
@@ -12,12 +13,12 @@ export const PUSH = "PUSH";
 
 
 //gotta love that 3rd order function
-export function actionTemplate(objName, apiCall, action = FETCH, customMapper = undefined) {
+export function syncActionTemplate(objName, apiCall, action = FETCH, customMapper = (result)=>{return {value:result}}) {
     return function (params) {
         return function (dispatch) {
-            dispatch(syncAction(action, objName, PENDING, params, customMapper ? (payload)=>{return customMapper(payload, params)}:undefined));
+            dispatch(syncAction(action, objName, PENDING, customMapper(undefined, params)));
             postPromise(apiCall, params).then((result) => {
-                dispatch(syncAction(action, objName, FULFILLED, result, customMapper ? (payload)=>{return customMapper(payload, params)}:undefined))
+                dispatch(syncAction(action, objName, FULFILLED, customMapper(result, params)))
             }).catch(createCatcher(dispatch)).catch((err) => {
                 dispatch(syncAction(action, objName, REJECTED, {lastError: err}))
             })
@@ -38,15 +39,4 @@ export function postPromise(call, params = {}) {
         else
             throw new SyncReturnError(response);
     })
-}
-
-export function syncAction(action, obj, state, payload, payloadMapper = (payload) => {
-    return {
-        value: payload
-    }
-}) {
-    return {
-        type: `${action}_${obj}_${state}`,
-        payload: payloadMapper(payload),
-    }
 }

@@ -1,13 +1,13 @@
-import {actionTemplate, FETCH} from './syncAction'
+import {syncActionTemplate, FETCH} from './syncAction'
 
-export const fetchUsers = actionTemplate("groupUsers", "lookupUsers", FETCH, (payload, params) => {
+export const fetchUsers = syncActionTemplate("groupUsers", "lookupUsers", FETCH, (payload, params) => {
     return {value: payload, uuid: params.group_id}
 });
 
-export const fetchAtomPerms = actionTemplate("groupAtomPerms", "getAtomPermissions", FETCH, (payload, params) => {
+export const fetchAtomPerms = syncActionTemplate("groupAtomPerms", "getAtomPermissions", FETCH, (payload, params) => {
     return {value: payload, groupUUID: params.group_id, atomUUID: params.atom_id}
 });
 
-export const fetchAtomsList = actionTemplate("groupAtomsList", "listAtoms", FETCH, (payload, params) => {
+export const fetchAtomsList = syncActionTemplate("groupAtomsList", "listAtoms", FETCH, (payload, params) => {
     return {value: payload, uuid: params.group_id}
 });

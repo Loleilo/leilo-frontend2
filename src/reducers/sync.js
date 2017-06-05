@@ -1,9 +1,10 @@
 import * as states from './states'
 
-function createFetchSyncReducer(objName, valueReducer = (state, action) => action.payload.value) {
+export function createFetchSyncReducer(objName, valueReducer = (state, action) => action.payload.value) {
     return function (state = {
         loaded: false,
         syncState: states.READING,
+        polling: false,
     }, action) {
         switch (action.type) {
             case `FETCH_${objName}_PENDING`:
@@ -24,13 +25,23 @@ function createFetchSyncReducer(objName, valueReducer = (state, action) => actio
                     syncState: states.ERROR,
                     lastError: action.payload.lastError,
                 };
+            case `POLL_${objName}_START`:
+                return {
+                    ...state,
+                    polling: true,
+                };
+            case `POLL_${objName}_STOP`:
+                return {
+                    ...state,
+                    polling: false,
+                };
             default:
                 return state;
         }
     };
 }
 
-function createPushFetchSyncReducer(objName, valueReducer = (state, action) => action.payload.value) {
+export function createPushFetchSyncReducer(objName, valueReducer = (state, action) => action.payload.value) {
     return function (state = {
         loaded: false,
         syncState: states.READING,
@@ -71,10 +82,18 @@ function createPushFetchSyncReducer(objName, valueReducer = (state, action) => a
                     syncState: states.ERROR,
                     lastError: action.payload.lastError,
                 };
+            case `POLL_${objName}_START`:
+                return {
+                    ...state,
+                    polling: true,
+                };
+            case `POLL_${objName}_STOP`:
+                return {
+                    ...state,
+                    polling: false,
+                };
             default:
                 return state;
         }
     };
 }
-
-export {createPushFetchSyncReducer, createFetchSyncReducer}
