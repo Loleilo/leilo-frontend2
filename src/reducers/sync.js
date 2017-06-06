@@ -18,6 +18,7 @@ export function createFetchSyncReducer(objName, valueReducer = (state, action) =
                     syncState: states.READY,
                     loaded: true,
                     value: valueReducer(state.value, action),
+                    lastError: undefined,
                 };
             case `FETCH_${objName}_REJECTED`:
                 return {
@@ -58,6 +59,7 @@ export function createPushFetchSyncReducer(objName, valueReducer = (state, actio
                     syncState: states.READY,
                     loaded: true,
                     value: valueReducer(state.value, action),
+                    lastError: undefined,
                 };
             case `FETCH_${objName}_REJECTED`:
                 return {

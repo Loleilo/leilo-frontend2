@@ -8,3 +8,7 @@ june 4
  - replaced model with normalized one
  - turns out model for database was already good, just had to copy to redux frontend
  - discovered higher order functions
+ 
+june 5
+ - a lot of trouble with polling inside actions
+ - finally finished reducer actions

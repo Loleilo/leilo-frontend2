@@ -10,7 +10,8 @@
     "redux-thunk": "latest",
     "redux-promise-middleware": "latest",
     "axios": "latest",
-    "react-redux": "latest"
+    "react-redux": "latest",
+    "prop-types": "latest"
   },
   "devDependencies": {
     "react-scripts": "1.0.7"

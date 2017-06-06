@@ -1,9 +1,16 @@
 import React from 'react'
+import '../global.css'
+import LoginFormConnector from "./logic/LoginFormConnector";
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-export default class App extends React.Component{
-    render(){
-        return <h1>
-            stuff
-        </h1>;
+class App extends React.Component {
+    render() {
+        return (
+            <MuiThemeProvider>
+                <LoginFormConnector/>
+            </MuiThemeProvider>
+        );
     }
 }
+
+export default App
