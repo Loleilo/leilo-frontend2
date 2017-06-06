@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Card, CardText} from 'material-ui/Card';
+import {Card, CardText, CardTitle} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField'
 import CircularProgress from 'material-ui/CircularProgress';
@@ -12,10 +12,10 @@ const LoginForm = ({
                        credentials,
                        loading,
                    }) => (
-    <Card className="container">
+    <div className="container">
         <form onSubmit={onSubmit}>
             <h1 className="card-heading">Leilo</h1>
-            <CardText>Please log into your account</CardText>
+            <p>Please log into your account</p>
             <div className="field-line">
                 <TextField
                     floatingLabelText="Username"
@@ -51,7 +51,7 @@ const LoginForm = ({
 
                 </div>}
         </form>
-    </Card>
+    </div>
 );
 
 LoginForm.propTypes = {

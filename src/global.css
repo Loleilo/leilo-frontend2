@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
 
+html{
+    font-family: 'Roboto', sans-serif;
+}
+
 body {
     margin: 0;
     font-size: 16px;
@@ -66,4 +70,8 @@ a:hover {
 .success-message {
     padding: 0 16px;
     color: green;
+}
+
+.permission-button{
+    padding: 10px;
 }
