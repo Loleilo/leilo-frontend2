@@ -34,6 +34,6 @@ const groupPermsParams = ["userGroupPerms", "getGroupPermissions", FETCH, (paylo
 }, (getState, params)=>{
     return getState().entities.user.userGroupPerms[params.uuid];
 }];
-export const fetchGroupPerms = syncActionTemplate(...groupsListParams);
-export const pollGroupPermsStart = pollingStartTemplate(...groupsListParams);
-export const pollGroupPermsStop = pollingStopTemplate(...groupsListParams);
+export const fetchGroupPerms = syncActionTemplate(...groupPermsParams);
+export const pollGroupPermsStart = pollingStartTemplate(...groupPermsParams);
+export const pollGroupPermsStop = pollingStopTemplate(...groupPermsParams);

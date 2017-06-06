@@ -11,3 +11,9 @@ export const ERR_INVALID_REQ = 6;
 export const ERR_VERSION_MISMATCH = 7;
 export const ERR_INVALID_LOGIN=8;
 export const ERR_INVALID_CALL=9;
+
+const PERM_NONE = 0;
+const PERM_READ = 1;
+const PERM_WRITE = 1 << 1;
+const PERM_CONFIG = 1 << 2;
+const PERMS_ALL = PERM_READ | PERM_WRITE | PERM_CONFIG;
