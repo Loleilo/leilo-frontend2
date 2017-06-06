@@ -31,7 +31,7 @@ export const pollGroupsListStop = pollingStopTemplate(...groupsListParams);
 
 const groupPermsParams = ["userGroupPerms", "getGroupPermissions", FETCH, (payload, params) => {
     return {value: payload, uuid: params.group_id}
-}, (getState)=>{
+}, (getState, params)=>{
     return getState().entities.user.userGroupPerms[params.uuid];
 }];
 export const fetchGroupPerms = syncActionTemplate(...groupsListParams);

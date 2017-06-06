@@ -1,4 +1,5 @@
 import {syncActionTemplate, FETCH, pollingStopTemplate, pollingStartTemplate} from './syncAction'
+import {guard} from "../util";
 
 const usersParams = ["groupUsers", "lookupUsers", FETCH, (payload, params) => {
     return {value: payload, uuid: params.group_id}
@@ -12,7 +13,7 @@ export const pollUsersStop = pollingStopTemplate(...usersParams);
 const atomPermsParams = ["groupAtomPerms", "getAtomPermissions", FETCH, (payload, params) => {
     return {value: payload, groupUUID: params.group_id, atomUUID: params.atom_id}
 }, (getState, params) => {
-    return getState().entities.groups.groupAtomPerms[params.groupUUID][params.atomUUID];
+    return guard(getState().entities.groups.groupAtomPerms[params.groupUUID])[params.atomUUID];
 }];
 export const fetchAtomPerms = syncActionTemplate(...atomPermsParams);
 export const pollAtomPermsStart = pollingStartTemplate(...atomPermsParams);

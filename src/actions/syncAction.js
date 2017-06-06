@@ -19,14 +19,18 @@ export const STOP = "STOP";
 export function pollingStartTemplate(objName, apiCall, action, customMapper = (result) => {
     return {value: result}
 }, stateMapper) {
-    return function (params, pollInterval) {
+    return function (pollInterval, params) {
         return function (dispatch, getState) {
             const mappedParams = customMapper(undefined, params);
+            const state = stateMapper(getState, mappedParams);
+            if (state !== undefined && state.polling)
+                return;
             dispatch(actionTemplate(POLL, objName, START, mappedParams));
             const pollFunc = () => {
-                if (!stateMapper(getState, mappedParams).polling)
+                const state = stateMapper(getState, mappedParams);
+                if (state === undefined || !state.polling)
                     return;
-                dispatch(syncActionTemplate(objName, apiCall, FETCH, customMapper));
+                dispatch(syncActionTemplate(objName, apiCall, FETCH, customMapper)(params));
                 setTimeout(pollFunc, pollInterval);
             };
             pollFunc();
@@ -34,7 +38,7 @@ export function pollingStartTemplate(objName, apiCall, action, customMapper = (r
     }
 }
 
-export function pollingStopTemplate(objName, apiCall, customMapper = (result) => {
+export function pollingStopTemplate(objName, apiCall, action, customMapper = (result) => {
     return {value: result}
 }) {
     return function (params) {
