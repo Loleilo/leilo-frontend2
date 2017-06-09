@@ -61,10 +61,10 @@ class LoginFormConnector extends Component {
 
     processChange(event) {
         const field = event.target.name;
-        const creds = this.state.credentials;
-        creds[field] = event.target.value;
+        const credentials = this.state.credentials;
+        credentials[field] = event.target.value;
         this.setState({
-            creds
+            credentials
         });
     }
 

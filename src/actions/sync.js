@@ -3,6 +3,7 @@ import actionTemplate from './action'
 import {API_ENDPOINT, CLIENT_API_VERSION} from "../consts";
 import SyncReturnError from "../errors/SyncReturnError";
 import createCatcher from '../errors/errorCatcher'
+import {WRITING} from "../reducers/states";
 
 export const PENDING = "PENDING";
 export const FULFILLED = "FULFILLED";
@@ -30,7 +31,7 @@ export function pollingStartTemplate(objName, apiCall, action, customMapper = (r
                 const state = stateMapper(getState, mappedParams);
                 if (state === undefined || !state.polling)
                     return;
-                dispatch(syncActionTemplate(objName, apiCall, FETCH, customMapper)(params));
+                dispatch(syncActionTemplate(objName, apiCall, FETCH, customMapper, stateMapper)(params));
                 setTimeout(pollFunc, pollInterval);
             };
             pollFunc();
@@ -49,10 +50,14 @@ export function pollingStopTemplate(objName, apiCall, action, customMapper = (re
 //gotta love that 3rd order function
 export function syncActionTemplate(objName, apiCall, action = FETCH, customMapper = (result) => {
     return {value: result}
-}) {
+}, stateMapper) {
     return function (params) {
-        return function (dispatch) {
-            dispatch(actionTemplate(action, objName, PENDING, customMapper(undefined, params)));
+        return function (dispatch, getState) {
+            const mappedParams = customMapper(undefined, params);
+            const state = stateMapper(getState, mappedParams);
+            if (state.state === PENDING || state.state === WRITING)
+                return;
+            dispatch(actionTemplate(action, objName, PENDING, mappedParams));
             postPromise(apiCall, params).then((result) => {
                 dispatch(actionTemplate(action, objName, FULFILLED, customMapper(result, params)))
             }).catch(createCatcher(dispatch)).catch((err) => {

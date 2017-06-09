@@ -1,7 +1,10 @@
-import {postPromise, syncActionTemplate, pollingStartTemplate, FETCH, pollingStopTemplate} from './syncAction'
+import {postPromise, syncActionTemplate, pollingStartTemplate, pollingStopTemplate} from './sync'
+import {LOGGED_IN, LOGGED_OUT} from "../reducers/states";
 
 export function login(params) {
-    return function (dispatch) {
+    return function (dispatch, getState) {
+        if (getState().entities.user.loginState.value !== LOGGED_OUT)
+            return;
         dispatch({type: "LOGIN_PENDING"});
         postPromise("login", params).then(() => {
             dispatch({type: "LOGIN_FULFILLED"})
@@ -12,7 +15,9 @@ export function login(params) {
 }
 
 export function logout() {
-    return function (dispatch) {
+    return function (dispatch,getState) {
+        if (getState().entities.user.loginState.value !== LOGGED_IN)
+            return;
         dispatch({type: "LOGOUT_PENDING"});
         postPromise("killSession").then(() => {
             dispatch({type: "LOGOUT_FULFILLED"})
@@ -22,18 +27,9 @@ export function logout() {
     }
 }
 
-const groupsListParams = ["groupsList", "listGroups", undefined, undefined, (getState)=>{
+const groupsListParams = ["groupsList", "listGroups", undefined, undefined, (getState) => {
     return getState().entities.user.groupsList
 }];
 export const fetchGroupsList = syncActionTemplate(...groupsListParams);
 export const pollGroupsListStart = pollingStartTemplate(...groupsListParams);
 export const pollGroupsListStop = pollingStopTemplate(...groupsListParams);
-
-const groupPermsParams = ["userGroupPerms", "getGroupPermissions", FETCH, (payload, params) => {
-    return {value: payload, uuid: params.group_id}
-}, (getState, params)=>{
-    return getState().entities.user.userGroupPerms[params.uuid];
-}];
-export const fetchGroupPerms = syncActionTemplate(...groupPermsParams);
-export const pollGroupPermsStart = pollingStartTemplate(...groupPermsParams);
-export const pollGroupPermsStop = pollingStopTemplate(...groupPermsParams);

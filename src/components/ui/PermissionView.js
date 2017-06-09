@@ -1,37 +1,54 @@
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import React from "react";
-import {PERM_CONFIG, PERM_READ, PERM_WRITE} from "../../consts";
 import PropTypes from 'prop-types'
+import {PERM_CONFIG, PERM_READ, PERM_WRITE} from "../../consts";
 
 const PermissionView = ({
                             permissions,
-                            permissionsChanged,
+                            onPermissionsSubmit,
                         }) => {
-    const Component1 = (permissions & PERM_READ) === 0 ? FlatButton : RaisedButton;
+    const ReadCompSelect = permissions.read ? RaisedButton : FlatButton;
+    const WriteCompSelect = permissions.write ? RaisedButton : FlatButton;
+    const ConfigCompSelect = permissions.config ? RaisedButton : FlatButton;
+    const generalProps = {
+        disableTouchRipple: onPermissionsSubmit === undefined,
+        primary: true,
+    };
+    if (onPermissionsSubmit === undefined)
+        onPermissionsSubmit = () => {};
     return (
         <div>
-            <Component1
+            <ReadCompSelect
+                {...generalProps}
                 label="R"
-                secondary={(permissions & PERM_READ) !== 0}
-                disableTouchRipple={(permissions & PERM_CONFIG) === 0}
+                className="permission-button-r"
+                onClick={(event) => {
+                    onPermissionsSubmit(PERM_READ)
+                }}
             />
-            <FlatButton
+            <WriteCompSelect
+                {...generalProps}
                 label="W"
-                secondary={(permissions & PERM_WRITE) !== 0}
-                disableTouchRipple={(permissions & PERM_CONFIG) === 0}
+                className="permission-button-w"
+                onClick={(event) => {
+                    onPermissionsSubmit(PERM_WRITE)
+                }}
             />
-            <FlatButton
+            <ConfigCompSelect
+                {...generalProps}
                 label="C"
-                secondary={(permissions & PERM_CONFIG) !== 0}
-                disableTouchRipple={(permissions & PERM_CONFIG) === 0}
+                className="permission-button-c"
+                onClick={(event) => {
+                    onPermissionsSubmit(PERM_CONFIG)
+                }}
             />
         </div>
     );
 };
 
 PermissionView.propTypes = {
-    permissions: PropTypes.number.isRequired,
+    permissions: PropTypes.object.isRequired,
     permissionsChanged: PropTypes.func
 };
 

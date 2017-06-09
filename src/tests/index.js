@@ -36,7 +36,7 @@ export function userActionsTest() {
             cG = store.getState().entities.user.groupsList.value[0];
             store.dispatch(user.fetchGroupPerms({group_id: cG}));
         }
-        if (step === 3 && store.getState().entities.user.userGroupPerms[cG] === states.READY) {
+        if (step === 3 && store.getState().entities.user.groupPerms[cG] === states.READY) {
             step++;
             store.dispatch(user.logout());
         }
@@ -183,6 +183,7 @@ export function pollingTest() {
     return atomPollingTest();
 }
 
+//todo this file has to be complete refactored
 export function runAll() {
     // userActionsTest();
    // actionsTest();

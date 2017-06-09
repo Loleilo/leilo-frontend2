@@ -3,15 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "latest",
+    "material-ui": "^0.18.3",
+    "material-ui-icons": "^1.0.0-alpha.3",
+    "prop-types": "latest",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-flexbox": "^3.1.3",
+    "react-grid-system": "^2.9.2",
+    "react-redux": "^5.0.5",
     "redux": "latest",
     "redux-logger": "latest",
-    "redux-thunk": "latest",
     "redux-promise-middleware": "latest",
-    "axios": "latest",
-    "react-redux": "latest",
-    "prop-types": "latest"
+    "redux-thunk": "latest"
   },
   "devDependencies": {
     "react-scripts": "1.0.7"

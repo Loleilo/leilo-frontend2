@@ -1,6 +1,5 @@
 import {combineReducers} from 'redux'
 import * as states from '../states'
-import {createFetchListReducer} from "../list";
 import {createFetchSyncReducer} from "../sync";
 
 const loginReducer = function (state = {
@@ -48,7 +47,6 @@ const loginReducer = function (state = {
 
 export default combineReducers({
     loginState: loginReducer,
-    userGroupPerms: createFetchListReducer("userGroupPerms"),
     username: createFetchSyncReducer("username"),
     groupsList: createFetchSyncReducer("groupsList"),
 })

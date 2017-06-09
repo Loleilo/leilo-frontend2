@@ -48,14 +48,6 @@ model 2
 					value: ["uuid of user", ...]
 				}
 			},
-			groupAtomPerms: {
-				"groupuuid":{
-					"atomuuid":{
-						state: WRITING,
-						value: 5,
-					}
-				}
-			}
 			groupAtomsList:{
 				"groupuuid":{
 					state: LOADED,
@@ -65,16 +57,39 @@ model 2
 		},
 		
 		atoms:{
+			atomNames:{
+				"groupuuid":{
+					"atomuuid":{
+						state: LOADED,
+						value: "name"
+					}
+				}
+			}
+			
 			atomGroups:{
-				"atomuuid":{
-					state: LOADED,
-					value: ["uuid of group", ...]
+				"groupuuid":{
+					"atomuuid":{
+						state: LOADED,
+						value: ["uuid of group", ...]
+					}
 				}
 			},
+			
 			atomValues:{
-				"atomuuid":{
-					state: WRITING,
-					value:"value of atom" //remember to json sanitize
+				"groupuuid":{
+					"atomuuid":{
+						state: WRITING,
+						value:"value of atom" //remember to json sanitize
+					}
+				}
+			},
+			
+			groupAtomPerms: {
+				"groupuuid":{
+					"atomuuid":{
+						state: WRITING,
+						value: 5,
+					}
 				}
 			}
 		},
