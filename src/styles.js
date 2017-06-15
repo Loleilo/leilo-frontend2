@@ -14,7 +14,7 @@ export const rightContent = {
     alignItems: 'right',
 };
 
-export const atomRow = {
+export const infoRow = {
     paddingLeft: "20px",
     justifyContent: 'space-between',
 };

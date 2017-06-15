@@ -2,13 +2,13 @@ import {PERM_CONFIG, PERM_READ, PERM_WRITE} from "./consts";
 
 export function arr(obj, idxs) {
     let currObj = obj;
-    for (let i = 1; i < arguments.length; i++) {
-        if (currObj === undefined)
-            currObj = {};
-        currObj = currObj[arguments[i]];
-    }
     if (currObj === undefined)
         currObj = {};
+    for (let i = 1; i < arguments.length; i++) {
+        if (currObj[arguments[i]] === undefined)
+            currObj[arguments[i]] = {};
+        currObj = currObj[arguments[i]];
+    }
     return currObj;
 }
 

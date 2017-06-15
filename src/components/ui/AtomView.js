@@ -7,9 +7,10 @@ import Settings from 'material-ui-icons/Settings'
 import IconButton from 'material-ui/IconButton'
 import Dialog from 'material-ui/Dialog'
 import View from 'react-flexbox'
-import {atomRow, leftContent, leftSelf, rightContent, rightSelf} from "../../styles";
+import {infoRow, leftContent, leftSelf, rightContent, rightSelf} from "../../styles";
 import ModeEdit from 'material-ui-icons/ModeEdit'
 import MountSensor from "../logic/MountSensor";
+import loadingWrapper from "../logic/loadingWrapper";
 
 const AtomView = ({
                       atom,
@@ -25,6 +26,7 @@ const AtomView = ({
                       onValueUnmount,
                       onEditClick,
                       valueDisplayState,
+    valueErrors,
 
                       dialogOpen,
                       onDialogClose,
@@ -45,6 +47,7 @@ const AtomView = ({
                         onChange={onValueChanged}
                         autoFocus
                         onBlur={onValueSubmitted}
+                        errorText={valueErrors}
                     /></form>
                 </MountSensor>
             );
@@ -58,7 +61,7 @@ const AtomView = ({
                           onClick={onEditClick} className="click-on-edit-field">
                         <View column auto style={{...leftContent, ...leftSelf}}>
                             <span >
-                            {atom.value}
+                            {loadingWrapper(atom.value)}
                             </span>
                         </View>
                         <View column auto>
@@ -75,6 +78,7 @@ const AtomView = ({
                 onChange={onValueChanged}
                 autoFocus
                 onBlur={onValueSubmitted}
+                errorText={valueErrors}
             /></form>
         }
     }
@@ -83,9 +87,9 @@ const AtomView = ({
             <Card style={{
                 maxWidth: "900px",
             }}>
-                <View row style={atomRow}>
+                <View row style={infoRow}>
                     <View column auto style={{...leftContent, ...leftSelf}}>
-                        <strong>{atom.name}{valueDisplay ? ":" : null}</strong>
+                        <strong>{loadingWrapper(atom.name)}{valueDisplay ? ":" : null}</strong>
                     </View>
                     <View column style={{...leftContent, ...leftSelf, maxWidth: '10%'}}>
                         {valueDisplay}

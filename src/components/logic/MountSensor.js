@@ -1,3 +1,4 @@
+import React from 'react';
 import {Component} from 'react'
 
 export default class MountSensor extends Component {
@@ -17,6 +18,8 @@ export default class MountSensor extends Component {
     }
 
     render() {
-        return this.props.children
+        return (
+        <div>{this.props.children}</div>
+        );
     }
 }

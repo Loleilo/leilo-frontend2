@@ -15,6 +15,7 @@ class AtomConnector extends Component {
             atomSubmitValue: "",
             dialogOpen: false,
             editing: false,
+            valueErrors: "",
         };
 
         this.initHandlers();
@@ -35,14 +36,22 @@ class AtomConnector extends Component {
 
         this.handleAtomValueSubmit = (event) => {
             event.preventDefault();
-            this.props.atom.pushValue(this.state.atomSubmitValue);
+            if(!this.state.atomSubmitValue)
+            {
+                this.setState({
+                    valueErrors: "Cannot set empty value"
+                });
+                return;
+            }
+            this.props.pushValue(this.state.atomSubmitValue);
             this.setState({
                 editing: false,
+                valueErrors:"",
             });
         };
 
-        this.handleValueMount = this.props.atom.loadValue;
-        this.handleValueUnmount = this.props.atom.unloadValue;
+        this.handleValueMount = this.props.loadValue;
+        this.handleValueUnmount = this.props.unloadValue;
 
         this.handleEditClick = () => {
             this.setState({
@@ -63,22 +72,23 @@ class AtomConnector extends Component {
     }
 
     componentWillMount() {
-        this.props.atom.loadName();
+        this.props.loadName();
         if (this.props.showPermissions)
-            this.props.atom.loadPerms();
+            this.props.loadPerms();
         else
-            this.props.atom.fetchPerms();
+            this.props.fetchPerms();
     }
 
     componentWillUnmount() {
-        this.props.atom.unloadName();
-        this.props.atom.unloadPerms();
-        this.props.atom.unloadValue();
+        this.props.unloadName();
+        this.props.unloadPerms();
+        this.props.unloadValue();
     }
 
     render() {
         const convertedPerms = this.props.atomPermissions;
         return <AtomView
+
             atom={{
                 name: this.props.atomName,
                 value: this.props.atomValue,
@@ -107,6 +117,8 @@ class AtomConnector extends Component {
 
             onValueMount={this.handleValueMount}
             onValueUnmount={this.handleValueUnmount}
+
+            valueErrors={this.state.valueErrors}
         />
     }
 }
@@ -126,7 +138,6 @@ function mapDispatchToProps(dispatch, props) {
         atom_id: props.atomID,
     };
     return {
-        atom: {
             loadName: () => {
                 dispatch(atoms.pollNameStart(SLOW_POLL_INTERVAL, atomSelector))
             },
@@ -153,7 +164,6 @@ function mapDispatchToProps(dispatch, props) {
             fetchPerms: () => {
                 dispatch(atoms.fetchPerms(atomSelector))
             },
-        },
 
     };
 }

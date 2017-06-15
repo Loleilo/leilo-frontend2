@@ -24,7 +24,7 @@ export function pollingStartTemplate(objName, apiCall, action, customMapper = (r
         return function (dispatch, getState) {
             const mappedParams = customMapper(undefined, params);
             const state = stateMapper(getState, mappedParams);
-            if (state !== undefined && state.polling)
+            if (state.polling)
                 return;
             dispatch(actionTemplate(POLL, objName, START, mappedParams));
             const pollFunc = () => {
@@ -61,7 +61,7 @@ export function syncActionTemplate(objName, apiCall, action = FETCH, customMappe
             postPromise(apiCall, params).then((result) => {
                 dispatch(actionTemplate(action, objName, FULFILLED, customMapper(result, params)))
             }).catch(createCatcher(dispatch)).catch((err) => {
-                dispatch(actionTemplate(action, objName, REJECTED, {lastError: err}))
+                dispatch(actionTemplate(action, objName, REJECTED,{lastError: err, ...customMapper(undefined, params)}))
             })
         }
     };
@@ -75,7 +75,7 @@ export function postPromise(call, params = {}) {
             params: params
         }).then((response) => {
         response = response.data;
-        if (response.returnCode === 0)
+        if ( response.returnCode === 0 && response.returnData!=="")//todo fix this server issue
             return response.returnData;
         else
             throw new SyncReturnError(response);
