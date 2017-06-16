@@ -23,55 +23,54 @@ const GroupView = ({
                        showAtomsExpander,
                        expanded,
                        onExpandClicked,
+                       hideCard,
                    }) => {
+    let content = <View row style={infoRow}>
+
+        <View column auto style={{...leftContent, ...leftSelf}}>
+            <strong>{loadingWrapper(group.name)}</strong>
+        </View>
+        <View column/>
+        <View column auto style={{...rightContent, ...rightSelf}}>
+            {showPerms && <PermissionView {...permissionsProps}/>}
+        </View>
+        <View column auto style={{...rightContent, ...rightSelf}}>
+            {showShareSettings &&
+            <IconButton
+                onClick={onSettingsClicked}
+                tooltip="Sharing settings"
+                disabled={!permissionsProps.permissions.config}
+            ><Settings/></IconButton>}
+        </View>
+        {showAtomsExpander &&
+        <View column auto style={{...rightContent, ...rightSelf}}>
+            <IconButton
+                onClick={onExpandClicked}
+                tooltip={expanded ? "Hide atoms" : "Show atoms"}
+            >
+                {
+                    expanded ? <KeyboardArrowUp/> : <KeyboardArrowDown/>
+                }
+            </IconButton>
+        </View>
+        }
+    </View>;
+    if (!hideCard)
+        content = <Card>
+            {content}
+        </Card>;
     return (
         <div>
-            <Card style={{
-                maxWidth: "900px",
-            }}>
-                <View row style={infoRow}>
-
-                    <View column auto style={{...leftContent, ...leftSelf}}>
-                        <strong>{loadingWrapper(group.name)}</strong>
-                    </View>
-                    <View column/>
-                    <View column auto style={{...rightContent, ...rightSelf}}>
-                        {showPerms && <PermissionView {...permissionsProps}/>}
-                    </View>
-                    <View column auto style={{...rightContent, ...rightSelf}}>
-                        {showShareSettings &&
-                        <IconButton
-                            onClick={onSettingsClicked}
-                            tooltip="Sharing settings"
-                            disabled={!permissionsProps.permissions.config}
-                        ><Settings/></IconButton>}
-                    </View>
-                    {showAtomsExpander &&
-                    <View column auto style={{...rightContent, ...rightSelf}}>
-                        <IconButton
-                            onClick={onExpandClicked}
-                            tooltip={expanded ? "Hide atoms" : "Show atoms"}
-                        >
-                            {
-                                expanded ? <KeyboardArrowUp/> : <KeyboardArrowDown/>
-                            }
-                        </IconButton>
-                    </View>
-                    }
-                </View>
-
-
-            </Card>
+            {content}
             {expanded &&
-            <View row auto style={{maxWidth: "900px",}}>
-                <View column/>
-                <View column>
+            <View row auto>
+                <View column auto>
                     <MountSensor
                         componentWillMount={onAtomsMount}
                         componentWillUnmount={onAtomsUnmount}
                     >
                         {loadingWrapper(atoms ? atoms.map((atom) => {
-                            return <View key={atom.key} row style={{
+                            return <View auto key={atom.key} row style={{
                                 paddingTop: "10px",
                                 width: "100%",
                             }}>

@@ -1,11 +1,25 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
 
-body {
+html, body {
     font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
 }
 
 .container {
     text-align: center;
+}
+
+.content{
+    padding: 10px;
+    max-width: 100vw;
+    margin-top: 64px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .error-message {
@@ -19,13 +33,13 @@ body {
 }
 
 /*[class^="permission-button"] button {*/
-    /*border-radius: 0 !important;*/
+/*border-radius: 0 !important;*/
 /*}*/
 
 [class^="permission-button"] + [class^="permission-button"] {
     margin-left: 5px !important;
 }
 
-.click-on-edit-field:hover{
+.click-on-edit-field:hover {
     background-color: lightgray;
 }

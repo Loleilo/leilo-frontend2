@@ -75,7 +75,10 @@ export function postPromise(call, params = {}) {
             params: params
         }).then((response) => {
         response = response.data;
-        if ( response.returnCode === 0 && response.returnData!=="")//todo fix this server issue
+        //todo fix this server issue
+        if(response.returnData==="")
+            throw new Error("Server returned empty data");
+        if ( response.returnCode === 0 )
             return response.returnData;
         else
             throw new SyncReturnError(response);

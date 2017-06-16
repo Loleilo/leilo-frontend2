@@ -84,9 +84,7 @@ const AtomView = ({
     }
     return (
         <div>
-            <Card style={{
-                maxWidth: "900px",
-            }}>
+            <Card>
                 <View row style={infoRow}>
                     <View column auto style={{...leftContent, ...leftSelf}}>
                         <strong>{loadingWrapper(atom.name)}{valueDisplay ? ":" : null}</strong>

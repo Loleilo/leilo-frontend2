@@ -2,6 +2,7 @@
   "name": "leilo-frontend2",
   "version": "0.1.0",
   "private": true,
+  "homepage" : "http://sunnylan.tk/Leilo",
   "dependencies": {
     "axios": "latest",
     "material-ui": "^0.18.3",
