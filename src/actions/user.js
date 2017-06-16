@@ -1,4 +1,4 @@
-import {postPromise, syncActionTemplate, pollingStartTemplate, pollingStopTemplate} from './sync'
+import {postPromise, syncActionTemplate, pollingStartTemplate, pollingStopTemplate, FETCH} from './sync'
 import {LOGGED_IN, LOGGED_OUT} from "../reducers/states";
 
 export function login(params) {
@@ -15,7 +15,7 @@ export function login(params) {
 }
 
 export function logout() {
-    return function (dispatch,getState) {
+    return function (dispatch, getState) {
         if (getState().entities.user.loginState.value !== LOGGED_IN)
             return;
         dispatch({type: "LOGOUT_PENDING"});
@@ -27,7 +27,17 @@ export function logout() {
     }
 }
 
-const groupsListParams = ["groupsList", "listGroups", undefined, undefined, (getState) => {
+const loginStateParams = ["loginState", "isLoggedIn", FETCH, (payload) => {
+    if (payload) return {value: LOGGED_IN};
+    else return {value: LOGGED_OUT};
+}, (getState) => {
+    return getState().entities.user.loginState
+}];
+export const fetchLoginState = syncActionTemplate(...loginStateParams);
+export const pollLoginStateStart = pollingStartTemplate(...loginStateParams);
+export const pollLoginStateStop = pollingStopTemplate(...loginStateParams);
+
+const groupsListParams = ["groupsList", "listGroups", FETCH, undefined, (getState) => {
     return getState().entities.user.groupsList
 }];
 export const fetchGroupsList = syncActionTemplate(...groupsListParams);

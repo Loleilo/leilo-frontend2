@@ -2,6 +2,8 @@ import {combineReducers} from 'redux'
 import * as states from '../states'
 import {createFetchSyncReducer} from "../sync";
 
+const loginFetchReducer = createFetchSyncReducer("loginState");
+
 const loginReducer = function (state = {
     value: states.LOGGED_OUT
 }, action) {
@@ -41,6 +43,7 @@ const loginReducer = function (state = {
                 lastError: action.payload.lastError,
             };
         default:
+            state=loginFetchReducer(state, action);
             return state;
     }
 };

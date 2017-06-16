@@ -1,11 +1,10 @@
 import React from 'react'
 import GroupConnector from "./logic/GroupConnector";
 import {connect} from 'react-redux'
-import * as user from '../actions/user';
 
 function mapStateToProps(state) {
     return {
-        state: state.entities.atoms,
+        state: state.entities,
     }
 }
 
