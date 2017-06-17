@@ -8,88 +8,107 @@ import View from "react-flexbox";
 import KeyboardArrowDown from 'material-ui-icons/KeyboardArrowDown'
 import KeyboardArrowUp from 'material-ui-icons/KeyboardArrowUp'
 import loadingWrapper from "../logic/loadingWrapper";
+import PropTypes from 'prop-types'
+import {arr} from "../../util";
 
 const GroupView = ({
-                       group,
-                       showPerms,
-                       permissionsProps,
-                       dialogOpen,
-                       onDialogClose,
-                       onSettingsClicked,
-                       showShareSettings,
+                       show,
+                       name,
+                       permissions,
+                       settings,
                        atoms,
-                       onAtomsMount,
-                       onAtomsUnmount,
-                       showAtomsExpander,
-                       expanded,
-                       onExpandClicked,
-                       hideCard,
                    }) => {
     let content = <View row style={infoRow}>
 
         <View column auto style={{...leftContent, ...leftSelf}}>
-            <strong>{loadingWrapper(group.name)}</strong>
+            <strong>{loadingWrapper(name.value)}</strong>
         </View>
         <View column/>
         <View column auto style={{...rightContent, ...rightSelf}}>
-            {showPerms && <PermissionView {...permissionsProps}/>}
+            {show.permissions && <PermissionView {...permissions}/>}
         </View>
         <View column auto style={{...rightContent, ...rightSelf}}>
-            {showShareSettings &&
+            {show.settings &&
             <IconButton
-                onClick={onSettingsClicked}
+                onClick={settings.onOpen}
                 tooltip="Sharing settings"
-                disabled={!permissionsProps.permissions.config}
+                disabled={!arr(permissions, "value", "config")}
             ><Settings/></IconButton>}
         </View>
-        {showAtomsExpander &&
+        {show.atoms &&
         <View column auto style={{...rightContent, ...rightSelf}}>
             <IconButton
-                onClick={onExpandClicked}
-                tooltip={expanded ? "Hide atoms" : "Show atoms"}
+                onClick={atoms.onExpand}
+                tooltip={atoms.expanded ? "Hide atoms" : "Show atoms"}
             >
                 {
-                    expanded ? <KeyboardArrowUp/> : <KeyboardArrowDown/>
+                    atoms.expanded ? <KeyboardArrowUp/> : <KeyboardArrowDown/>
                 }
             </IconButton>
         </View>
         }
     </View>;
-    if (!hideCard)
+
+    if (!show.card)
         content = <Card>
             {content}
         </Card>;
     return (
         <div>
             {content}
-            {expanded &&
+            {atoms.expanded &&
             <View row auto>
                 <View column auto>
                     <MountSensor
-                        componentWillMount={onAtomsMount}
-                        componentWillUnmount={onAtomsUnmount}
+                        componentWillMount={atoms.onMount}
+                        componentWillUnmount={atoms.onUnmount}
                     >
-                        {loadingWrapper(atoms ? atoms.map((atom) => {
-                            return <View auto key={atom.key} row style={{
-                                paddingTop: "10px",
-                                width: "100%",
-                            }}>
-                                {atom.content}
-                            </View>
-                        }) : undefined)}
+                        {
+                            loadingWrapper(atoms.value ? atoms.value.map((atom) => {
+                                return <View auto key={atom.key} row style={{
+                                    paddingTop: "10px",
+                                    width: "100%",
+                                }}>
+                                    {atom.content}
+                                </View>
+                            }) : undefined)
+                        }
                     </MountSensor>
                 </View>
             </View>}
 
+            {show.settings &&
             < Dialog
                 title="Group sharing settings"
-                open={dialogOpen}
-                onRequestClose={onDialogClose}
+                open={settings.open}
+                onRequestClose={settings.onClose}
             >
-                shkjahfls
-            </Dialog>
+                Settings go here
+            </Dialog>}
         </div>
     )
+};
+
+GroupView.propTypes = {
+    show: PropTypes.shape({
+        permissions: PropTypes.bool,
+        settings: PropTypes.bool,
+        atoms: PropTypes.bool,
+    }).isRequired,
+    atoms: PropTypes.shape({
+        onMount: PropTypes.func,
+        onUnmount: PropTypes.func,
+        onExpand: PropTypes.func,
+    }).isRequired,
+    name: PropTypes.shape({
+        value: PropTypes.string,
+    }).isRequired,
+    permissions: PropTypes.object,
+    settings: PropTypes.shape({
+        open: PropTypes.bool,
+        onOpen: PropTypes.func,
+        onClose: PropTypes.func,
+    }).isRequired,
 };
 
 export default GroupView;

@@ -16,7 +16,9 @@ export const rightContent = {
 
 export const infoRow = {
     paddingLeft: "20px",
+    paddingRight: "10px",
     justifyContent: 'space-between',
+    height: "50px"
 };
 
 export const leftSelf={

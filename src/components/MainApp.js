@@ -17,34 +17,36 @@ class MainApp extends Component {
     render() {
         return <div>
             <AppBarView
+                onLogout={this.props.logout}
                 onNavClick={() => {
                     this.setState({
                         drawerOpen: true,
                     })
                 }}
-                onLogout={this.props.logout}
             />
             <div className="content">
                 <GroupConnector
-                    uiProps={{
-                        showShareSettings: true,
-                        showPermissions: true,
-                        showAtomsExpander: true,
-                        atomUIProps: {
-                            showShareSettings: true,
-                            showPermissions: true,
-                            showAtomValueControls: true,
-                        }
+                    show={{
+                        atomShow: {value: true, permissions: true, settings: true},
+                        permissions: true,
+                        settings: true,
+                        atoms: true,
+                        expandedByDefault: false,
                     }}
 
                     groupID="5d663818-47e3-11e7-8989-5b95d87ce60a"
                 />
-                <DrawerView
-                    open={this.state.drawerOpen}
-                    onOpenChange={(open) => this.setState({drawerOpen: open})}
-
-                />
+                <pre>{JSON.stringify(this.props.state, null, "\t")}</pre>
             </div>
+
+            <DrawerView
+                open={this.state.drawerOpen}
+                onOpenChange={(opened) => {
+                    this.setState({
+                        drawerOpen: opened,
+                    })
+                }}
+            />
         </div>
     }
 }

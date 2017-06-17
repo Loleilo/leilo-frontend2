@@ -1,5 +1,5 @@
 import {syncActionTemplate, FETCH, pollingStartTemplate, pollingStopTemplate, PUSH} from './sync'
-import {arr} from "../util";
+import {arr, convertPermsToObj} from "../util";
 
 const paramMapper = (payload, params) => {
     return {value: payload, groupUUID: params.group_id, atomUUID: params.atom_id}
@@ -32,7 +32,9 @@ export const pollNameStop = pollingStopTemplate(...nameParams);
 // nameParams[2] = PUSH;
 // export const pushName = syncActionTemplate(...nameParams);
 
-const permsParams = ["atomPerms", "getAtomPermissions", FETCH, paramMapper, (getState, params) => {
+const permsParams = ["atomPerms", "getAtomPermissions", FETCH,(payload, params) => {
+    return {value: convertPermsToObj(payload), groupUUID: params.group_id, atomUUID: params.atom_id}
+}, (getState, params) => {
     return arr(getState().entities.atoms.atomPerms, params.groupUUID, params.atomUUID);
 }];
 export const fetchPerms = syncActionTemplate(...permsParams);

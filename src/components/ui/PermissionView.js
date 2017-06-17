@@ -3,44 +3,46 @@ import RaisedButton from 'material-ui/RaisedButton'
 import React from "react";
 import PropTypes from 'prop-types'
 import {PERM_CONFIG, PERM_READ, PERM_WRITE} from "../../consts";
+import {arr} from "../../util";
 
 const PermissionView = ({
-                            permissions,
-                            onPermissionsSubmit,
+                            value,
+                            onSubmit,
                         }) => {
-    const ReadCompSelect = permissions.read ? RaisedButton : FlatButton;
-    const WriteCompSelect = permissions.write ? RaisedButton : FlatButton;
-    const ConfigCompSelect = permissions.config ? RaisedButton : FlatButton;
+    const ReadCompSelect = arr(value, "read") ? RaisedButton : FlatButton;
+    const WriteCompSelect = arr(value, "write") ? RaisedButton : FlatButton;
+    const ConfigCompSelect = arr(value, "config") ? RaisedButton : FlatButton;
     const generalProps = {
-        disableTouchRipple: onPermissionsSubmit === undefined,
+        disableTouchRipple: onSubmit === undefined,
         primary: true,
     };
-    if (onPermissionsSubmit === undefined)
-        onPermissionsSubmit = () => {};
+    if (onSubmit === undefined)
+        onSubmit = () => {
+        };
     return (
         <div>
             <ReadCompSelect
                 {...generalProps}
                 label="R"
                 className="permission-button-r"
-                onClick={(event) => {
-                    onPermissionsSubmit(PERM_READ)
+                onClick={() => {
+                    onSubmit(PERM_READ)
                 }}
             />
             <WriteCompSelect
                 {...generalProps}
                 label="W"
                 className="permission-button-w"
-                onClick={(event) => {
-                    onPermissionsSubmit(PERM_WRITE)
+                onClick={() => {
+                    onSubmit(PERM_WRITE)
                 }}
             />
             <ConfigCompSelect
                 {...generalProps}
                 label="C"
                 className="permission-button-c"
-                onClick={(event) => {
-                    onPermissionsSubmit(PERM_CONFIG)
+                onClick={() => {
+                    onSubmit(PERM_CONFIG)
                 }}
             />
         </div>
@@ -48,7 +50,7 @@ const PermissionView = ({
 };
 
 PermissionView.propTypes = {
-    permissions: PropTypes.object.isRequired,
+    permissions: PropTypes.object,
     permissionsChanged: PropTypes.func
 };
 

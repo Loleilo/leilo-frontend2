@@ -13,55 +13,41 @@ import MountSensor from "../logic/MountSensor";
 import loadingWrapper from "../logic/loadingWrapper";
 
 const AtomView = ({
-                      atom,
-                      permissionsProps,
-
-                      onSettingsClicked,
-                      showShareSettings,
-
-                      onValueSubmitted,
-                      onValueChanged,
-                      showAtomValueControls,
-                      onValueMount,
-                      onValueUnmount,
-                      onEditClick,
-                      valueDisplayState,
-    valueErrors,
-
-                      dialogOpen,
-                      onDialogClose,
-
-                      showPerms,
+                      show,
+                      value,
+                      name,
+                      permissions,
+                      settings,
                   }) => {
     let valueDisplay = null;
-    if (showAtomValueControls) {
-        if (valueDisplayState === "EDIT VIEW") {
+    if (show.value) {
+        if (value.displayState === "EDIT VIEW") {
             valueDisplay = (
                 <MountSensor
-                    componentWillMount={onValueMount}
-                    componentWillUnmount={onValueUnmount}
+                    componentWillMount={value.onMount}
+                    componentWillUnmount={value.onUnmount}
                 >
-                    <form onSubmit={onValueSubmitted}><TextField
+                    <form onSubmit={value.onSubmit}><TextField
                         name="value"
-                        defaultValue={ atom.value }
-                        onChange={onValueChanged}
+                        defaultValue={ value.value }
+                        onChange={value.onEditChange}
                         autoFocus
-                        onBlur={onValueSubmitted}
-                        errorText={valueErrors}
+                        onBlur={value.onSubmit}
+                        errorText={value.lastError}
                     /></form>
                 </MountSensor>
             );
-        } else if (valueDisplayState === "VIEW") {
+        } else if (value.displayState === "VIEW") {
             valueDisplay = (
                 <MountSensor
-                    componentWillMount={onValueMount}
-                    componentWillUnmount={onValueUnmount}
+                    componentWillMount={value.onMount}
+                    componentWillUnmount={value.onUnmount}
                 >
                     <View row auto
-                          onClick={onEditClick} className="click-on-edit-field">
+                          onClick={value.onEditBegin} className="click-on-edit-field">
                         <View column auto style={{...leftContent, ...leftSelf}}>
                             <span >
-                            {loadingWrapper(atom.value)}
+                            {loadingWrapper(value.value)}
                             </span>
                         </View>
                         <View column auto>
@@ -72,13 +58,13 @@ const AtomView = ({
                     </View>
                 </MountSensor>
             );
-        } else if (valueDisplayState === "EDIT") {
-            valueDisplay = <form onSubmit={onValueSubmitted}><TextField
+        } else if (value.displayState === "EDIT") {
+            valueDisplay = <form onSubmit={value.onSubmit}><TextField
                 name="value"
-                onChange={onValueChanged}
+                onChange={value.onEditChange}
                 autoFocus
-                onBlur={onValueSubmitted}
-                errorText={valueErrors}
+                onBlur={value.onSubmit}
+                errorText={value.lastError}
             /></form>
         }
     }
@@ -87,51 +73,60 @@ const AtomView = ({
             <Card>
                 <View row style={infoRow}>
                     <View column auto style={{...leftContent, ...leftSelf}}>
-                        <strong>{loadingWrapper(atom.name)}{valueDisplay ? ":" : null}</strong>
+                        <strong>{loadingWrapper(name.value)}{valueDisplay ? ":" : null}</strong>
                     </View>
                     <View column style={{...leftContent, ...leftSelf, maxWidth: '10%'}}>
                         {valueDisplay}
                     </View>
                     <View column/>
                     <View column auto style={{...rightContent, ...rightSelf}}>
-                        {showPerms && <PermissionView {...permissionsProps}/>}
+                        {show.permissions && <PermissionView {...permissions}/>}
                     </View>
                     <View column auto style={{...rightContent, ...rightSelf}}>
-                        {showShareSettings &&
+                        {show.settings &&
                         <IconButton
-                            onClick={onSettingsClicked}
-                            tooltip="Sharing settings"
-                            disabled={!permissionsProps.permissions.config}
+                            onClick={settings.onOpen}
+                            tooltip={permissions.value.config ? "Sharing settings" : "Not enough perms"}
+                            disabled={!permissions.value.config}
                         ><Settings/></IconButton>}
                     </View>
                 </View>
             </Card>
-            {showShareSettings &&
+            {show.settings &&
             <Dialog
                 title="Atom sharing settings"
-                open={dialogOpen}
-                onRequestClose={onDialogClose}
+                open={settings.open}
+                onRequestClose={settings.onClose}
             >
-                shkjahfls
+                Settings go here
             </Dialog>
             }
         </div>
     )
 };
-
 AtomView.propTypes = {
-    atom: PropTypes.object,
-    valueEditable: PropTypes.bool,
-    permissionsProps: PropTypes.object,
-    onValueSubmitted: PropTypes.func,
-    onSettingsClicked: PropTypes.func,
-    dialogOpen: PropTypes.bool,
-    onDialogClose: PropTypes.func,
-    showShareSettings: PropTypes.bool,
-    onValueMount: PropTypes.func,
-    onValueUnmount: PropTypes.func,
-    showAtomValueControls: PropTypes.bool,
-    showValue: PropTypes.bool,
+    show: PropTypes.shape({
+        value: PropTypes.bool,
+        permissions: PropTypes.bool,
+        settings: PropTypes.bool,
+    }).isRequired,
+    value: PropTypes.shape({
+        onMount: PropTypes.func,
+        onUnmount: PropTypes.func,
+        onEditChange: PropTypes.func,
+        onEditBegin: PropTypes.func,
+        onSubmit: PropTypes.func,
+        displayState: PropTypes.string,
+    }).isRequired,
+    name: PropTypes.shape({
+        value: PropTypes.string,
+    }).isRequired,
+    permissions: PropTypes.object.isRequired,
+    settings: PropTypes.shape({
+        open: PropTypes.bool,
+        onOpen: PropTypes.func,
+        onClose: PropTypes.func,
+    }).isRequired,
 };
 
 export default AtomView;

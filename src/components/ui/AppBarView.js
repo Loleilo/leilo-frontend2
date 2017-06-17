@@ -1,10 +1,12 @@
 import AppBar from 'material-ui/AppBar'
 import React from "react";
 import {FlatButton} from "material-ui";
+import PropTypes from 'prop-types'
 
-export default function (props) {
+function AppBarView(props) {
     return <AppBar
         title="Leilo"
+        docked={false}
         style={{
             position: "fixed",
             maxWidth: "100%",
@@ -23,3 +25,10 @@ export default function (props) {
         }
     />
 }
+
+AppBarView.propTypes={
+    onNavClick: PropTypes.func,
+    onLogout: PropTypes.func,
+};
+
+export default AppBarView;

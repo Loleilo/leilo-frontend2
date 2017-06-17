@@ -1,7 +1,7 @@
 import React from 'react'
 import {Component} from 'react'
 import AtomView from "../ui/AtomView"
-import {convertPermsToObj, arr} from "../../util"
+import {arr} from "../../util"
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import * as atoms from "../../actions/atoms";
@@ -22,8 +22,8 @@ class AtomConnector extends Component {
     }
 
     initHandlers() {
-        this.handleAtomValueChange = (event) => {
-            if(!this.state.editing)
+        this.handleValueChange = (event) => {
+            if (!this.state.editing)
                 return;
             this.setState({
                 atomSubmitValue: event.target.value,
@@ -34,10 +34,9 @@ class AtomConnector extends Component {
         this.handlePermissionsSubmit = () => {
         };
 
-        this.handleAtomValueSubmit = (event) => {
+        this.handleValueSubmit = (event) => {
             event.preventDefault();
-            if(!this.state.atomSubmitValue)
-            {
+            if (!this.state.atomSubmitValue) {
                 this.setState({
                     valueErrors: "Cannot set empty value"
                 });
@@ -46,25 +45,22 @@ class AtomConnector extends Component {
             this.props.pushValue(this.state.atomSubmitValue);
             this.setState({
                 editing: false,
-                valueErrors:"",
+                valueErrors: "",
             });
         };
 
-        this.handleValueMount = this.props.loadValue;
-        this.handleValueUnmount = this.props.unloadValue;
-
-        this.handleEditClick = () => {
+        this.handleEditBegin = () => {
             this.setState({
                 editing: true,
             });
         };
 
-        this.handleDialogOpen = () => {
+        this.handleSettingsOpen = () => {
             this.setState({
                 dialogOpen: true,
             });
         };
-        this.handleDialogClose = () => {
+        this.handleSettingsClose = () => {
             this.setState({
                 dialogOpen: false,
             });
@@ -73,7 +69,7 @@ class AtomConnector extends Component {
 
     componentWillMount() {
         this.props.loadName();
-        if (this.props.showPermissions)
+        if (this.props.show.permissions)
             this.props.loadPerms();
         else
             this.props.fetchPerms();
@@ -86,49 +82,37 @@ class AtomConnector extends Component {
     }
 
     render() {
-        const convertedPerms = this.props.atomPermissions;
+        const props = this.props;
         return <AtomView
-
-            atom={{
-                name: this.props.atomName,
-                value: this.props.atomValue,
+            value={{
+                ...this.props.value,
+                onMount: props.loadValue,
+                onUnmount: props.unloadValue,
+                onEditChange: this.handleValueChange,
+                onEditBegin: this.handleEditBegin,
+                onSubmit: this.handleValueSubmit,
+                displayState: arr(props.permissions, "value", "read") ? (this.state.editing ? "EDIT VIEW" : "VIEW") : "EDIT",
             }}
-
-            permissionsProps={ {
-                permissions: convertedPerms,
-                onPermissionsSubmit: this.props.allowPermissionsSubmit && convertedPerms.config ? this.handlePermissionsSubmit : undefined,
+            name={{
+                ...props.name,
             }}
-
-            dialogOpen={this.state.dialogOpen}
-            onSettingsClicked={ this.handleDialogOpen}
-            onDialogClose={this.handleDialogClose}
-
-            showShareSettings={this.props.showShareSettings}
-
-            showAtomValueControls={this.props.showAtomValueControls && (convertedPerms.read || convertedPerms.write)}
-            onValueSubmitted={this.handleAtomValueSubmit}
-            onValueChanged={this.handleAtomValueChange}
-            valueDisplayState={
-                convertedPerms.read ? (this.state.editing ? "EDIT VIEW" : "VIEW") : "EDIT"
-            }
-            onEditClick={this.handleEditClick}
-
-            showPerms={this.props.showPermissions}
-
-            onValueMount={this.handleValueMount}
-            onValueUnmount={this.handleValueUnmount}
-
-            valueErrors={this.state.valueErrors}
-        />
+            permissions={{
+                ...props.permissions,
+            }}
+            settings={{
+                open: this.state.dialogOpen,
+                onOpen: this.handleSettingsOpen,
+                onClose: this.handleSettingsClose,
+            }}
+            show={this.props.show}/>
     }
 }
 
 function mapStateToProps(state, props) {
     return {
-        ...props.uiProps,
-        atomName: arr(state.entities.atoms.atomNames, props.groupID, props.atomID).value,
-        atomValue: arr(state.entities.atoms.atomValues, props.groupID, props.atomID).value,
-        atomPermissions: convertPermsToObj(arr(state.entities.atoms.atomPerms, props.groupID, props.atomID).value),
+        name: arr(state.entities.atoms.atomNames, props.groupID, props.atomID),
+        value: arr(state.entities.atoms.atomValues, props.groupID, props.atomID),
+        permissions: arr(state.entities.atoms.atomPerms, props.groupID, props.atomID),
     };
 }
 
@@ -138,32 +122,32 @@ function mapDispatchToProps(dispatch, props) {
         atom_id: props.atomID,
     };
     return {
-            loadName: () => {
-                dispatch(atoms.pollNameStart(SLOW_POLL_INTERVAL, atomSelector))
-            },
-            unloadName: () => {
-                dispatch(atoms.pollNameStop(atomSelector))
-            },
+        loadName: () => {
+            dispatch(atoms.pollNameStart(SLOW_POLL_INTERVAL, atomSelector))
+        },
+        unloadName: () => {
+            dispatch(atoms.pollNameStop(atomSelector))
+        },
 
-            loadValue: () => {
-                dispatch(atoms.pollValueStart(FAST_POLL_INTERVAL, atomSelector))
-            },
-            unloadValue: () => {
-                dispatch(atoms.pollValueStop(atomSelector))
-            },
-            pushValue: (value) => {
-                dispatch(atoms.pushValue({...atomSelector, value: value}))
-            },
+        loadValue: () => {
+            dispatch(atoms.pollValueStart(FAST_POLL_INTERVAL, atomSelector))
+        },
+        unloadValue: () => {
+            dispatch(atoms.pollValueStop(atomSelector))
+        },
+        pushValue: (value) => {
+            dispatch(atoms.pushValue({...atomSelector, value: value}))
+        },
 
-            loadPerms: () => {
-                dispatch(atoms.pollPermsStart(MEDIUM_POLL_INTERVAL, atomSelector))
-            },
-            unloadPerms: () => {
-                dispatch(atoms.pollPermsStop(atomSelector))
-            },
-            fetchPerms: () => {
-                dispatch(atoms.fetchPerms(atomSelector))
-            },
+        loadPerms: () => {
+            dispatch(atoms.pollPermsStart(SLOW_POLL_INTERVAL, atomSelector))
+        },
+        unloadPerms: () => {
+            dispatch(atoms.pollPermsStop(atomSelector))
+        },
+        fetchPerms: () => {
+            dispatch(atoms.fetchPerms(atomSelector))
+        },
 
     };
 }
@@ -171,7 +155,7 @@ function mapDispatchToProps(dispatch, props) {
 const connected = connect(mapStateToProps, mapDispatchToProps)(AtomConnector);
 
 connected.propTypes = {
-    uiProps: PropTypes.object,
+    show: PropTypes.object.isRequired,
     groupID: PropTypes.string.isRequired,
     atomID: PropTypes.string.isRequired
 };

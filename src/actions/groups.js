@@ -1,5 +1,5 @@
 import {syncActionTemplate, FETCH, pollingStopTemplate, pollingStartTemplate, PUSH} from './sync'
-import {arr} from "../util";
+import {arr, convertPermsToObj} from "../util";
 
 const paramMapper = (payload, params) => {
     return {value: payload, uuid: params.group_id}
@@ -19,13 +19,15 @@ export const fetchAtoms = syncActionTemplate(...atomsListParams);
 export const pollAtomsStart = pollingStartTemplate(...atomsListParams);
 export const pollAtomsStop = pollingStopTemplate(...atomsListParams);
 
-const groupPermsParams = ["groupPerms", "getGroupPermissions", FETCH, paramMapper, (getState, params) => {
+const groupPermsParams = ["groupPerms", "getGroupPermissions", FETCH, (payload, params) => {
+    return {value: convertPermsToObj(payload), uuid: params.group_id}
+}, (getState, params) => {
     return arr(getState().entities.groups.groupPerms,params.uuid);
 }];
 export const fetchPerms = syncActionTemplate(...groupPermsParams);
 export const pollPermsStart = pollingStartTemplate(...groupPermsParams);
 export const pollPermsStop = pollingStopTemplate(...groupPermsParams);
-groupPermsParams[1] = "setGroupPermissions";
+groupPermsParams[1] = "setGroupPermissions"; //todo add a backmapper
 groupPermsParams[2] = PUSH;
 export const pushPerms = syncActionTemplate(...groupPermsParams);
 

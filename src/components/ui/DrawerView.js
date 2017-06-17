@@ -1,7 +1,8 @@
 import React from 'react'
 import {Drawer} from "material-ui";
+import PropTypes from 'prop-types'
 
-export default function (props) {
+function DrawerView(props) {
     return <Drawer open={props.open}
                    docked={false}
                    onRequestChange={props.onOpenChange}
@@ -9,3 +10,10 @@ export default function (props) {
         cust
     </Drawer>
 }
+
+DrawerView.propTypes={
+    open: PropTypes.bool.isRequired,
+    onOpenChange: PropTypes.func,
+};
+
+export default DrawerView;

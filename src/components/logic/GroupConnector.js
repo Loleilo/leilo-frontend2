@@ -1,33 +1,34 @@
 import  React from "react";
 import {Component} from 'react'
-import {arr, convertPermsToObj} from "../../util";
+import {arr} from "../../util";
 import * as groups from "../../actions/groups";
 import {MEDIUM_POLL_INTERVAL, SLOW_POLL_INTERVAL} from "../../consts";
 import GroupView from "../ui/GroupView";
 import AtomConnector from "./AtomConnector";
 import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
 
 class GroupConnector extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            dialogOpen: false,
-            expanded: this.props.expandedByDefault,
+            settingsOpen: false,
+            expanded: this.props.show.expandedByDefault && true,
         };
 
         this.initHandlers();
     }
 
     initHandlers() {
-        this.handleDialogOpen = () => {
+        this.handleSettingsOpen = () => {
             this.setState({
-                dialogOpen: true,
+                settingsOpen: true,
             });
         };
-        this.handleDialogClose = () => {
+        this.handleSettingsClose = () => {
             this.setState({
-                dialogOpen: false,
+                settingsOpen: false,
             });
         };
 
@@ -43,7 +44,7 @@ class GroupConnector extends Component {
 
     componentWillMount() {
         this.props.loadName();
-        if (this.props.showPermissions)
+        if (this.props.show.permissions)
             this.props.loadPerms();
         else
             this.props.fetchPerms();
@@ -56,12 +57,12 @@ class GroupConnector extends Component {
 
     render() {
         let atomsRender = undefined;
-        if (this.props.showAtomsExpander && this.props.groupAtoms && this.props.groupAtoms.map) {
-            atomsRender = this.props.groupAtoms.map((val) => {
+        if (this.props.show.atoms && this.props.atoms.value && this.props.atoms.value.map) {
+            atomsRender = this.props.atoms.value.map((val) => {
                 return {
                     key: val,
                     content: <AtomConnector
-                        uiProps={this.props.atomUIProps}
+                        show={this.props.show.atomShow}
                         atomID={val}
                         groupID={this.props.groupID}
                     />
@@ -70,40 +71,37 @@ class GroupConnector extends Component {
         }
 
         return <GroupView
-            group={{
-                name: this.props.groupName,
+            show={this.props.show}
+            atoms={{
+                value: atomsRender,
+                onMount: this.props.loadAtoms,
+                onUnmount: this.props.unloadAtoms,
+                onExpand: this.handleExpandClicked,
+                expanded: this.state.expanded,
             }}
-            permissionsProps={{
-                permissions: this.props.groupPerms,
-                onPermissionsSubmit: this.props.allowPermissionsSubmit && this.props.groupPerms.config ? this.handlePermissionsSubmit : undefined,
+            name={this.props.name}
+            permissions={this.props.permissions}
+            settings={{
+                open: this.state.settingsOpen,
+                onOpen: this.handleSettingsOpen,
+                onClose: this.handleSettingsClose,
             }}
-
-            showPerms={this.props.showPermissions}
-            showShareSettings={this.props.showShareSettings}
-            showAtomsExpander={this.props.showAtomsExpander}
-
-            expanded={this.state.expanded}
-            onExpandClicked={this.handleExpandClicked}
-
-            onAtomsMount={this.props.loadAtoms}
-            onAtomsUnmount={this.props.unloadAtoms}
-
-            atoms={atomsRender}
-
-            dialogOpen={this.state.dialogOpen}
-            onDialogClose={this.handleDialogClose}
-            onSettingsClicked={this.handleDialogOpen}
         />
     }
 }
 
+GroupConnector.propTypes = {
+    show: PropTypes.shape({
+        atomShow: PropTypes.object,
+    }).isRequired,
+    groupID: PropTypes.string.isRequired,
+};
+
 function mapStateToProps(state, props) {
     return {
-        ...props.uiProps,
-        groupID: props.groupID,
-        groupName: arr(state.entities.groups.groupNames, props.groupID).value,
-        groupPerms: convertPermsToObj(arr(state.entities.groups.groupPerms, props.groupID).value),
-        groupAtoms: arr(state.entities.groups.groupAtomsList, props.groupID).value,
+        name: arr(state.entities.groups.groupNames, props.groupID),
+        permissions: arr(state.entities.groups.groupPerms, props.groupID),
+        atoms: arr(state.entities.groups.groupAtomsList, props.groupID),
     }
 }
 
@@ -120,10 +118,13 @@ function mapDispatchToProps(dispatch, props) {
         },
 
         loadPerms: () => {
-            dispatch(groups.pollPermsStart(MEDIUM_POLL_INTERVAL, groupSelector))
+            dispatch(groups.pollPermsStart(SLOW_POLL_INTERVAL, groupSelector))
         },
         unloadPerms: () => {
             dispatch(groups.pollPermsStop(groupSelector))
+        },
+        fetchPerms: () => {
+            dispatch(groups.fetchPerms(groupSelector));
         },
 
         loadAtoms: () => {
