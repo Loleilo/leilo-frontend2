@@ -5,7 +5,7 @@ import {arr} from "../../util"
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import * as atoms from "../../actions/atoms";
-import {FAST_POLL_INTERVAL, MEDIUM_POLL_INTERVAL, SLOW_POLL_INTERVAL} from "../../consts";
+import {FAST_POLL_INTERVAL, SLOW_POLL_INTERVAL} from "../../consts";
 
 class AtomConnector extends Component {
     constructor(props) {

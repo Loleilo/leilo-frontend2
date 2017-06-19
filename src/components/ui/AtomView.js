@@ -11,6 +11,8 @@ import {infoRow, leftContent, leftSelf, rightContent, rightSelf} from "../../sty
 import ModeEdit from 'material-ui-icons/ModeEdit'
 import MountSensor from "../logic/MountSensor";
 import loadingWrapper from "../logic/loadingWrapper";
+import {WRITING} from "../../reducers/states";
+import CircularProgress from "material-ui/CircularProgress";
 
 const AtomView = ({
                       show,
@@ -83,12 +85,12 @@ const AtomView = ({
                         {show.permissions && <PermissionView {...permissions}/>}
                     </View>
                     <View column auto style={{...rightContent, ...rightSelf}}>
-                        {show.settings &&
-                        <IconButton
-                            onClick={settings.onOpen}
-                            tooltip={permissions.value.config ? "Sharing settings" : "Not enough perms"}
-                            disabled={!permissions.value.config}
-                        ><Settings/></IconButton>}
+                        {show.settings && value.syncState === WRITING ? <CircularProgress size={30}/> :
+                            <IconButton
+                                onClick={settings.onOpen}
+                                tooltip={permissions.value.config ? "Sharing settings" : "Not enough perms"}
+                                disabled={!permissions.value.config}
+                            ><Settings/></IconButton>}
                     </View>
                 </View>
             </Card>

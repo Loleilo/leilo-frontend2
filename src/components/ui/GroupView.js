@@ -1,6 +1,8 @@
 import React from 'react'
 import {infoRow, leftContent, leftSelf, rightContent, rightSelf} from "../../styles";
-import {Card, Dialog, IconButton} from "material-ui";
+import Card from "material-ui/Card";
+import Dialog from 'material-ui/Dialog'
+import IconButton from 'material-ui/IconButton'
 import PermissionView from "./PermissionView";
 import Settings from 'material-ui-icons/Settings'
 import MountSensor from "../logic/MountSensor";
@@ -10,6 +12,7 @@ import KeyboardArrowUp from 'material-ui-icons/KeyboardArrowUp'
 import loadingWrapper from "../logic/loadingWrapper";
 import PropTypes from 'prop-types'
 import {arr} from "../../util";
+import ListView from "./ListView";
 
 const GroupView = ({
                        show,
@@ -18,10 +21,13 @@ const GroupView = ({
                        settings,
                        atoms,
                    }) => {
-    let content = <View row style={infoRow}>
+    let nameContent = loadingWrapper(name.value);
+    if (!show.removeCardStyle)
+        nameContent = <strong>{nameContent}</strong>;
+    let content = <View row style={show.removeCardStyle ? undefined : infoRow}>
 
         <View column auto style={{...leftContent, ...leftSelf}}>
-            <strong>{loadingWrapper(name.value)}</strong>
+            {nameContent}
         </View>
         <View column/>
         <View column auto style={{...rightContent, ...rightSelf}}>
@@ -49,7 +55,7 @@ const GroupView = ({
         }
     </View>;
 
-    if (!show.card)
+    if (!show.removeCardStyle)
         content = <Card>
             {content}
         </Card>;
@@ -63,16 +69,9 @@ const GroupView = ({
                         componentWillMount={atoms.onMount}
                         componentWillUnmount={atoms.onUnmount}
                     >
-                        {
-                            loadingWrapper(atoms.value ? atoms.value.map((atom) => {
-                                return <View auto key={atom.key} row style={{
-                                    paddingTop: "10px",
-                                    width: "100%",
-                                }}>
-                                    {atom.content}
-                                </View>
-                            }) : undefined)
-                        }
+                        <ListView style={{
+                            paddingTop: "10px",
+                        }}>{atoms.value}</ListView>
                     </MountSensor>
                 </View>
             </View>}
@@ -94,6 +93,7 @@ GroupView.propTypes = {
         permissions: PropTypes.bool,
         settings: PropTypes.bool,
         atoms: PropTypes.bool,
+        removeCardStyle: PropTypes.bool,
     }).isRequired,
     atoms: PropTypes.shape({
         onMount: PropTypes.func,

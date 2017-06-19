@@ -24,15 +24,16 @@ export function pollingStartTemplate(objName, apiCall, action, customMapper = (r
         return function (dispatch, getState) {
             const mappedParams = customMapper(undefined, params);
             const state = stateMapper(getState, mappedParams);
-            if (state.polling)
+            const oldPolling = state.polling;
+            dispatch(actionTemplate(POLL, objName, START, {...mappedParams, pollInterval: pollInterval}));
+            if (oldPolling > 0)
                 return;
-            dispatch(actionTemplate(POLL, objName, START, mappedParams));
             const pollFunc = () => {
                 const state = stateMapper(getState, mappedParams);
-                if (state === undefined || !state.polling)
+                if (state.polling === undefined || state.polling === 0)
                     return;
                 dispatch(syncActionTemplate(objName, apiCall, FETCH, customMapper, stateMapper)(params));
-                setTimeout(pollFunc, pollInterval);
+                setTimeout(pollFunc, state.pollInterval);
             };
             pollFunc();
         }
@@ -61,7 +62,7 @@ export function syncActionTemplate(objName, apiCall, action = FETCH, customMappe
             postPromise(apiCall, params).then((result) => {
                 dispatch(actionTemplate(action, objName, FULFILLED, customMapper(result, params)))
             }).catch(createCatcher(dispatch)).catch((err) => {
-                dispatch(actionTemplate(action, objName, REJECTED,{lastError: err, ...customMapper(undefined, params)}))
+                dispatch(actionTemplate(action, objName, REJECTED, {lastError: err, ...customMapper(undefined, params)}))
             })
         }
     };
@@ -76,9 +77,9 @@ export function postPromise(call, params = {}) {
         }).then((response) => {
         response = response.data;
         //todo fix this server issue
-        if(response.returnData==="")
+        if (response.returnData === "")
             throw new Error("Server returned empty data");
-        if ( response.returnCode === 0 )
+        if (response.returnCode === 0)
             return response.returnData;
         else
             throw new SyncReturnError(response);

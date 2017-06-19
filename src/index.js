@@ -5,14 +5,17 @@ import store from './store'
 import registerServiceWorker from './registerServiceWorker';
 import App from "./components/App"
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import {BrowserRouter} from "react-router-dom";
 
 // remove tap delay, essential for MaterialUI to work properly
 injectTapEventPlugin();
 
 ReactDOM.render(
-    <Provider store={store}>
-        <App/>
-    </Provider>
+    <BrowserRouter>
+        <Provider store={store}>
+            <App/>
+        </Provider>
+    </BrowserRouter>
     , document.getElementById('root'));
 
 registerServiceWorker();

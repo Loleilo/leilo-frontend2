@@ -1,12 +1,11 @@
 import AppBar from 'material-ui/AppBar'
 import React from "react";
-import {FlatButton} from "material-ui";
+import FlatButton from "material-ui/FlatButton";
 import PropTypes from 'prop-types'
 
 function AppBarView(props) {
     return <AppBar
         title="Leilo"
-        docked={false}
         style={{
             position: "fixed",
             maxWidth: "100%",

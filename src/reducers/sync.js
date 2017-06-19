@@ -1,11 +1,14 @@
 import * as states from './states'
 
 export function createFetchSyncReducer(objName, valueReducer = (state, action) => action.payload.value) {
-    return function (state = {
-        loaded: false,
-        syncState: states.READING,
-        polling: false,
-    }, action) {
+    return function (state, action) {
+        state = {
+            loaded: false,
+            syncState: states.READING,
+            polling: 0,
+            pollInterval: Number.POSITIVE_INFINITY,
+            ...state,
+        };
         switch (action.type) {
             case `FETCH_${objName}_PENDING`:
                 return {
@@ -29,12 +32,13 @@ export function createFetchSyncReducer(objName, valueReducer = (state, action) =
             case `POLL_${objName}_START`:
                 return {
                     ...state,
-                    polling: true,
+                    polling: state.polling ? state.polling + 1 : 1,
+                    pollInterval: Math.min(state.pollInterval, action.payload.pollInterval),
                 };
             case `POLL_${objName}_STOP`:
                 return {
                     ...state,
-                    polling: false,
+                    polling: state.polling && state.polling > 0 ? state.polling - 1 : 0,
                 };
             default:
                 return state;
@@ -46,6 +50,8 @@ export function createPushFetchSyncReducer(objName, valueReducer = (state, actio
     return function (state = {
         loaded: false,
         syncState: states.READING,
+        polling: 0,
+        pollInterval: Math.POSITIVE_INFINITY,
     }, action) {
         switch (action.type) {
             case `FETCH_${objName}_PENDING`:
@@ -87,12 +93,13 @@ export function createPushFetchSyncReducer(objName, valueReducer = (state, actio
             case `POLL_${objName}_START`:
                 return {
                     ...state,
-                    polling: true,
+                    polling: state.polling + 1,
+                    pollInterval: Math.min(action.pollInterval, state.pollInterval),
                 };
             case `POLL_${objName}_STOP`:
                 return {
                     ...state,
-                    polling: false,
+                    polling: state.polling - 1,
                 };
             default:
                 return state;
