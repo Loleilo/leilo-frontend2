@@ -44,6 +44,9 @@ class DrawerConnector extends Component {
                 }) : undefined,
                 onMount: this.props.loadGroups,
                 onUnmount: this.props.unloadGroups,
+                onClick: () => {
+                    this.handleGroupClick("")
+                },
             }}
 
             dashboard={{

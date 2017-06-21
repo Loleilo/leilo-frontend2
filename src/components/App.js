@@ -8,17 +8,20 @@ import {LOGGED_IN} from "../reducers/states";
 import MountSensor from "./logic/MountSensor";
 import * as user from '../actions/user';
 import {SLOW_POLL_INTERVAL} from "../consts";
+import {BrowserRouter, withRouter} from "react-router-dom";
 
 function App(props) {
     return (
-        <MuiThemeProvider>
-            <MountSensor componentWillMount={props.loadLoginState} componentWillUnmount={props.unloadLoginState}>
-                {
-                    props.loggedIn ?
-                        <MainApp/> : <LoginFormConnector/>
-                }
-            </MountSensor>
-        </MuiThemeProvider>
+        <BrowserRouter>
+            <MuiThemeProvider>
+                <MountSensor componentWillMount={props.loadLoginState} componentWillUnmount={props.unloadLoginState}>
+                    {
+                        props.loggedIn ?
+                            <MainApp history={props.history}/> : <LoginFormConnector/>
+                    }
+                </MountSensor>
+            </MuiThemeProvider>
+        </BrowserRouter>
     );
 }
 

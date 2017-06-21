@@ -15,7 +15,7 @@ function DrawerView(props) {
             <ListItem disabled={true}><h2>Leilo</h2></ListItem>
             <ListItem primaryText="Dashboard" leftIcon={<DashboardIcon/>} onTouchTap={props.dashboard.onClick}/>
             <Divider/>
-            <ListItem><strong>Devices</strong></ListItem>
+            <ListItem onTouchTap={props.groups.onClick}><strong>Devices</strong></ListItem>
             <MountSensor
                 componentWillMount={props.groups.onMount}
                 componentWillUnmount={props.groups.onUnmount}

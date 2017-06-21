@@ -5,6 +5,7 @@ import * as user from '../actions/user'
 import {Component} from 'react'
 import DrawerConnector from "./logic/DrawerConnector";
 import ContentRouter from "./ContentRouter";
+import {Route, withRouter} from "react-router-dom";
 
 class MainApp extends Component {
     constructor(props) {
@@ -16,6 +17,14 @@ class MainApp extends Component {
 
     render() {
         return <div>
+           <DrawerConnector
+                open={this.state.drawerOpen}
+                onOpenChange={(opened) => {
+                    this.setState({
+                        drawerOpen: opened,
+                    })
+                }}
+            />
             <AppBarView
                 onLogout={this.props.logout}
                 onNavClick={() => {
@@ -25,22 +34,12 @@ class MainApp extends Component {
                 }}
             />
             <ContentRouter/>
-            <DrawerConnector
-                open={this.state.drawerOpen}
-                onOpenChange={(opened) => {
-                    this.setState({
-                        drawerOpen: opened,
-                    })
-                }}
-            />
         </div>
     }
 }
 
 function mapStateToProps() {
-    return {
-
-    }
+    return {}
 }
 
 function mapDispatchToProps(dispatch) {
@@ -51,7 +50,7 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainApp)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MainApp))
 
 //
 //     <GroupConnector
