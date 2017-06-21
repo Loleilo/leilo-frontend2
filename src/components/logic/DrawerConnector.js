@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import * as user from '../../actions/user'
 import {SLOW_POLL_INTERVAL} from "../../consts";
 import GroupConnector from "./GroupConnector";
-import {withRouter} from 'react-router-dom'
+import {routeActions} from 'redux-simple-router'
 
 class DrawerConnector extends Component {
     constructor(props) {
@@ -16,12 +16,12 @@ class DrawerConnector extends Component {
 
     initHandlers() {
         this.handleGroupClick = (group) => {
-            this.props.history.push(`/groups/${group}`);
+            this.props.push(`/groups/${group}`);
             this.props.onOpenChange(false);
         };
 
         this.handleDashboardClick = () => {
-            this.props.history.push('/dashboard');
+            this.props.push('/dashboard');
             this.props.onOpenChange(false);
         };
     }
@@ -64,6 +64,9 @@ function mapDispatchToProps(dispatch) {
         unloadGroups: () => {
             dispatch(user.pollGroupsListStop())
         },
+        push: (url) => {
+            dispatch(routeActions.push(url))
+        },
     };
 }
 
@@ -73,4 +76,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DrawerConnector))
+export default connect(mapStateToProps, mapDispatchToProps)(DrawerConnector)

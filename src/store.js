@@ -1,9 +1,16 @@
-import {applyMiddleware,  createStore} from 'redux'
+import {applyMiddleware, compose, createStore} from 'redux'
 
 import reducer from "./reducers"
 import logger from 'redux-logger'
 import thunk from 'redux-thunk'
+import {syncHistory} from 'redux-simple-router'
+import createHistory from 'history/createBrowserHistory'
 
-const middleware = applyMiddleware( thunk, logger);
+export const history = createHistory();
 
-export default createStore(reducer, middleware);
+const reduxRouter = syncHistory(history);
+
+const middleware = applyMiddleware(reduxRouter, thunk, logger);
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+export default createStore(reducer, composeEnhancers( middleware));

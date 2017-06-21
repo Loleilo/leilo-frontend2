@@ -5,7 +5,7 @@ import * as user from '../actions/user'
 import {Component} from 'react'
 import DrawerConnector from "./logic/DrawerConnector";
 import ContentRouter from "./ContentRouter";
-import {Route, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 
 class MainApp extends Component {
     constructor(props) {
@@ -33,7 +33,7 @@ class MainApp extends Component {
                     })
                 }}
             />
-            <ContentRouter/>
+            <ContentRouter location={this.props.location}/>
         </div>
     }
 }
