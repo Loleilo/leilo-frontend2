@@ -43,7 +43,6 @@ class GroupConnector extends Component {
     }
 
     componentWillMount() {
-        console.log("GroupConnector mount");
         this.props.loadName();
         if (this.props.show.permissions)
             this.props.loadPerms();
@@ -52,7 +51,6 @@ class GroupConnector extends Component {
     }
 
     componentWillUnmount() {
-        console.log("GroupConnector unmount");
         this.props.unloadName();
         this.props.unloadPerms();
     }

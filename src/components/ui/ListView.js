@@ -8,7 +8,7 @@ export default function (props) {
         content: "Empty list"
     }] : props.children).map((item, index) => {
         return <View auto key={item.key} row style={{
-            paddingTop: index === 0 ? "0" : "10px",
+            paddingTop: index === 0 ? "0" : props.spacing ? props.spacing:"10px",
         }}>
             {item.content}
         </View>

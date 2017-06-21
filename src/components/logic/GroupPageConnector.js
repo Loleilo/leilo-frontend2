@@ -4,7 +4,6 @@ import {Route, Switch} from "react-router-dom";
 import {connect} from 'react-redux'
 import * as user from "../../actions/user";
 import {SLOW_POLL_INTERVAL} from "../../consts";
-import ListView from "../ui/ListView";
 import GroupPageView from "../ui/GroupPageView";
 
 function GroupPageConnector(props) {

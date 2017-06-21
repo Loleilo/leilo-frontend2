@@ -18,7 +18,8 @@
     "redux": "latest",
     "redux-logger": "latest",
     "redux-promise-middleware": "latest",
-    "redux-thunk": "latest"
+    "redux-thunk": "latest",
+    "react-tap-event-plugin": "latest"
   },
   "devDependencies": {
     "react-scripts": "1.0.7"
