@@ -1,0 +1,16 @@
+Dashboard consists of an ordered set of configured widget objects.
+
+Definition of widget:
+Widget exposes two parts in its interface: config and actual widget:
+
+Config:
+ - props must have
+     onConfigSubmit(config)
+      config - serializable json object (no functions/weird stuff inside) that Widget will be aable to read
+
+Widget:
+ - The actual display for widget. props must have
+     config - accepts config created by Config
+     will be implemented later - controls how widget looks, like layout
+     search - contains search string from user
+        - component may decide to change display based on user search term
