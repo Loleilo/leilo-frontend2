@@ -10,6 +10,11 @@ html, body {
     background-color: #F5F5F5;
 }
 
+/* Change the white to any color ;) */
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px lightblue inset;
+}
+
 .container {
     text-align: center;
 }

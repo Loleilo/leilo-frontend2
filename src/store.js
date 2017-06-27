@@ -12,5 +12,6 @@ const reduxRouter = syncHistory(history);
 
 const middleware = applyMiddleware(reduxRouter, thunk, logger);
 
+//todo remove when development is done
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export default createStore(reducer, composeEnhancers( middleware));
