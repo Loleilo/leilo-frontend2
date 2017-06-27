@@ -10,17 +10,25 @@ import * as user from '../actions/user';
 import {SLOW_POLL_INTERVAL} from "../consts";
 import {Router} from "react-router-dom";
 import {history} from '../store'
+import {IntlProvider} from "react-intl";
+// import en from 'react-intl/locale-data/en';
+// import {addLocaleData, IntlProvider} from 'react-intl';
+//
+// addLocaleData([...en]);
 
 function App(props) {
     return (
         <Router history={history}>
             <MuiThemeProvider>
-                <MountSensor componentWillMount={props.loadLoginState} componentWillUnmount={props.unloadLoginState}>
-                    {
-                        props.loggedIn ?
-                            <MainApp history={props.history}/> : <LoginFormConnector/>
-                    }
-                </MountSensor>
+                <IntlProvider>
+                    <MountSensor componentWillMount={props.loadLoginState}
+                                 componentWillUnmount={props.unloadLoginState}>
+                        {
+                            props.loggedIn ?
+                                <MainApp history={props.history}/> : <LoginFormConnector/>
+                        }
+                    </MountSensor>
+                </IntlProvider>
             </MuiThemeProvider>
         </Router>
     );

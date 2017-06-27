@@ -24,7 +24,6 @@ function GroupPageConnector(props) {
                       }}/>
     }) : undefined;
 
-    console.log(routes);
     return <Switch>
         {routes}
         <Route exact path="/groups">

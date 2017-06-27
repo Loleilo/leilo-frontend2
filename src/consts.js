@@ -20,4 +20,4 @@ export const PERMS_ALL = PERM_READ | PERM_WRITE | PERM_CONFIG;
 
 export const SLOW_POLL_INTERVAL = 6000;
 export const MEDIUM_POLL_INTERVAL = 3000;
-export const FAST_POLL_INTERVAL = 1400;
+export const FAST_POLL_INTERVAL = 750;

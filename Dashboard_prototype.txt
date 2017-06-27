@@ -6,11 +6,13 @@ Widget exposes two parts in its interface: config and actual widget:
 Config:
  - props must have
      onConfigSubmit(config)
-      config - serializable json object (no functions/weird stuff inside) that Widget will be aable to read
+      config - serializable json object (no functions/weird stuff inside) that Widget will be able to read
+        layout - must contain layout object describing size of widget
+        value - actual config that will be sent to widget
+     defaultConfig - config to load view from
 
 Widget:
  - The actual display for widget. props must have
      config - accepts config created by Config
-     will be implemented later - controls how widget looks, like layout
      search - contains search string from user
         - component may decide to change display based on user search term

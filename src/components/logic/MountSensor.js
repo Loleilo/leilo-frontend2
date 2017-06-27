@@ -1,7 +1,13 @@
 import React from 'react';
 import {Component} from 'react'
+import PropTypes from 'prop-types'
 
 export default class MountSensor extends Component {
+    static propTypes={
+        componentWillMount: PropTypes.func,
+        componentWillUnmount: PropTypes.func,
+    };
+
     constructor(props) {
         super(props);
 
@@ -10,16 +16,18 @@ export default class MountSensor extends Component {
     }
 
     componentWillMount() {
-        this.props.componentWillMount();
+        if (this.props.componentWillMount)
+            this.props.componentWillMount();
     }
 
     componentWillUnmount() {
-        this.props.componentWillUnmount();
+        if (this.props.componentWillUnmount)
+            this.props.componentWillUnmount();
     }
 
     render() {
         return (
-        <div>{this.props.children}</div>
+            <div>{this.props.children}</div>
         );
     }
 }
