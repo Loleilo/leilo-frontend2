@@ -18,9 +18,9 @@ import {IntlProvider} from "react-intl";
 
 function App(props) {
     return (
+        <IntlProvider>
         <Router history={history}>
             <MuiThemeProvider>
-                <IntlProvider>
                     <MountSensor componentWillMount={props.loadLoginState}
                                  componentWillUnmount={props.unloadLoginState}>
                         {
@@ -28,9 +28,9 @@ function App(props) {
                                 <MainApp history={props.history}/> : <LoginFormConnector/>
                         }
                     </MountSensor>
-                </IntlProvider>
             </MuiThemeProvider>
         </Router>
+        </IntlProvider>
     );
 }
 
