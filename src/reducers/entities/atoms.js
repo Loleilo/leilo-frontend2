@@ -12,7 +12,7 @@ function createMapper(reducer) {
 
 export default combineReducers({
     atomGroups: createFetchListReducer('atomGroups', createMapper(createFetchSyncReducer("atomGroups"))),
-    atomValues: createFetchListReducer('atomValues', createMapper(createFetchSyncReducer("atomValues"))), //fix this to write later
+    atomValues: createFetchListReducer('atomValues', createMapper(createFetchSyncReducer("atomValues"))),
     atomNames: createFetchListReducer('atomNames', createMapper(createFetchSyncReducer("atomNames"))),
     atomPerms: createFetchListReducer("atomPerms", createMapper(createFetchSyncReducer("atomPerms"))),
 })
