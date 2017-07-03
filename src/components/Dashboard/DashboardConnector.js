@@ -56,6 +56,7 @@ class DashboardConnector extends Component {
                 widgets: widgets,
                 currID: currID + 1,
             });
+            this.closeAddDialog();
         };
         this.handleLayoutChange = (layout) => {
             const dashboard = obj(this.props.dashboard, "value");

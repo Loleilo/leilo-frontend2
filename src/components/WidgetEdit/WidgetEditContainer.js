@@ -35,19 +35,23 @@ export default class AddWidgetContainer extends Component {
                     stepIndex: this.state.stepIndex + 1,
                 });
         };
-        this.handlePrevStep = () => {
-            this.setState({
-                stepIndex: this.state.stepIndex - 1,
-            })
-        };
-        this.handleConfigChange = (config) => {
-            this.setState({
-                config: {
-                    ...this.state.config,
-                    config: config,
-                },
-            })
-        };
+        this.handlePrevStep = () => this.setState({
+            stepIndex: this.state.stepIndex - 1,
+        });
+
+        this.handleConfigChange = (config) => this.setState({
+            config: {
+                ...this.state.config,
+                config: config,
+            },
+        });
+
+        this.handleSelectedWidgetChange = (value) => this.setState({
+            config: {
+                ...this.state.config,
+                widgetComponent: value,
+            }
+        });
     }
 
     renderConfigView() {
@@ -61,27 +65,14 @@ export default class AddWidgetContainer extends Component {
     render() {
         return <AddWidgetView
             stepIndex={this.state.stepIndex}
-            widgetList={Object.keys(widgetList).map((key) => {
-                return {
-                    key: key,
-                    text: widgetList[key].displayName,
-                    onClick: () => {
-                        this.setState({
-                            config: {
-                                ...this.state.config,
-                                widgetComponent: key,
-                                size: widgetList[key].size,
-                            },
-                            stepIndex: 1,
-                        })
-                    },
-                    icon: widgetList[key].icon,
-                }
-            })}
+            widgetSelection={{
+                value: this.state.config.widgetComponent,
+                onChange: this.handleSelectedWidgetChange,
+            }}
             widgetConfigView={this.state.stepIndex === 1 ? this.renderConfigView() : undefined}
             onPrevStep={this.handlePrevStep}
             onNextStep={this.handleNextStep}
-            nextDisabled={this.state.stepIndex === 0}
+            nextDisabled={this.state.stepIndex === 0 ? (!this.state.config.widgetComponent) : false}
         />
     };
 }

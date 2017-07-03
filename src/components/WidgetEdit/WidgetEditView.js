@@ -1,24 +1,17 @@
 import React from 'react'
 import {Stepper, Step, StepLabel} from 'material-ui/Stepper'
 import PropTypes from 'prop-types'
-import {List, ListItem} from "material-ui/List";
 import FlatButton from "material-ui/FlatButton";
 import RaisedButton from "material-ui/RaisedButton";
+import WidgetTypeSelector from '../WidgetTypeSelect'
 
 function getContent(props) {
     switch (props.stepIndex) {
         case 0:
             return <div>Select the type of widget to add:<br/>
-                <List>
-                    {props.widgetList.map((item) => {
-                        return <ListItem
-                            primaryText={item.text}
-                            key={item.key}
-                            leftIcon={item.icon}
-                            onClick={item.onClick}
-                        />
-                    })}
-                </List></div>;
+                <WidgetTypeSelector
+                    {...props.widgetSelection}
+                /></div>;
         case 1:
             return <div>Set the configuration for the widget:<br/>
                 {props.widgetConfigView}
@@ -63,12 +56,7 @@ function AddWidgetView(props) {
 
 AddWidgetView.propTypes = {
     stepIndex: PropTypes.number.isRequired,
-    widgetList: PropTypes.arrayOf(PropTypes.shape({
-        key: PropTypes.any,
-        text: PropTypes.string,
-        onClick: PropTypes.func,
-        icon: PropTypes.any,
-    })).isRequired,
+    widgetSelection: PropTypes.object,
     widgetConfigView: PropTypes.any,
     onPrevStep: PropTypes.func,
     onNextStep: PropTypes.func,
