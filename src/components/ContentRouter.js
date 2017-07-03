@@ -1,7 +1,7 @@
 import {Route} from 'react-router-dom'
 import React from 'react'
-import Dashboard from "./logic/DashboardConnector";
-import GroupPageConnector from "./logic/GroupPageConnector";
+import Dashboard from "./Dashboard/DashboardConnector";
+import GroupPageConnector from "./GroupPage/GroupPageConnector";
 
 export default function ContentRouter() {
     return <div className="content">

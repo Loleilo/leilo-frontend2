@@ -2,15 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Card} from 'material-ui/Card'
 import TextField from 'material-ui/TextField'
-import PermissionView from './PermissionView'
+import PermissionView from '../util/PermissionView'
 import Settings from 'material-ui-icons/Settings'
 import IconButton from 'material-ui/IconButton'
 import Dialog from 'material-ui/Dialog'
 import View from 'react-flexbox'
 import {infoRow, leftContent, leftSelf, rightContent, rightSelf} from "../../styles";
 import ModeEdit from 'material-ui-icons/ModeEdit'
-import MountSensor from "../logic/MountSensor";
-import loadingWrapper from "../logic/loadingWrapper";
+import MountSensor from "../util/MountSensor";
+import loadingWrapper from "../util/loadingWrapper";
 import {WRITING} from "../../reducers/states";
 import CircularProgress from "material-ui/CircularProgress";
 

@@ -1,11 +1,11 @@
 import React from 'react'
 import {Component} from 'react'
-import DrawerView from "../ui/DrawerView"
+import DrawerView from "./DrawerView"
 // import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import * as user from '../../actions/user'
 import {SLOW_POLL_INTERVAL} from "../../consts";
-import GroupConnector from "./GroupConnector";
+import GroupConnector from "../GroupBar/GroupConnector";
 import {routeActions} from 'redux-simple-router'
 
 class DrawerConnector extends Component {

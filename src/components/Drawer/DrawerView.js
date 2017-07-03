@@ -4,7 +4,7 @@ import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider'
 import PropTypes from 'prop-types'
 import DashboardIcon from 'material-ui-icons/Dashboard'
-import MountSensor from "../logic/MountSensor";
+import MountSensor from "../util/MountSensor";
 
 function DrawerView(props) {
     return <Drawer open={props.open}

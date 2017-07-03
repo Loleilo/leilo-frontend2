@@ -2,7 +2,7 @@ import React from 'react'
 import TextField from "material-ui/TextField";
 import PropTypes from 'prop-types'
 import View from 'react-flexbox'
-import MountSensor from "../../logic/MountSensor";
+import MountSensor from "../../util/MountSensor";
 
 function DigitalConfigView(props) {
     //todo replace this with superselectfield package

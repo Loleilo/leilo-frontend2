@@ -3,16 +3,16 @@ import {infoRow, leftContent, leftSelf, rightContent, rightSelf} from "../../sty
 import Card from "material-ui/Card";
 import Dialog from 'material-ui/Dialog'
 import IconButton from 'material-ui/IconButton'
-import PermissionView from "./PermissionView";
+import PermissionView from "../util/PermissionView";
 import Settings from 'material-ui-icons/Settings'
-import MountSensor from "../logic/MountSensor";
+import MountSensor from "../util/MountSensor";
 import View from "react-flexbox";
 import KeyboardArrowDown from 'material-ui-icons/KeyboardArrowDown'
 import KeyboardArrowUp from 'material-ui-icons/KeyboardArrowUp'
-import loadingWrapper from "../logic/loadingWrapper";
+import loadingWrapper from "../util/loadingWrapper";
 import PropTypes from 'prop-types'
 import {obj} from "../../util";
-import ListView from "./ListView";
+import ListView from "../WidgetEdit/ListView";
 
 const GroupView = ({
                        show,

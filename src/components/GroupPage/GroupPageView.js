@@ -1,5 +1,5 @@
 import React from 'react'
-import ListView from "./ListView";
+import ListView from "../WidgetEdit/ListView";
 
 export default function(props){
     return <ListView spacing="20px">

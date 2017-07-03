@@ -7,7 +7,7 @@ import ContentAdd from 'material-ui-icons/Add'
 import PropTypes from 'prop-types'
 import {obj} from "../../util";
 import Dialog from "material-ui/Dialog";
-import AddWidgetContainer from "../logic/WidgetEditContainer";
+import AddWidgetContainer from "../WidgetEdit/WidgetEditContainer";
 
 let Grid = ReactGridLayout;
 Grid = WidthProvider(Grid);

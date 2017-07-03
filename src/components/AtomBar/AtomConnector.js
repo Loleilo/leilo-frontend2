@@ -1,6 +1,6 @@
 import React from 'react'
 import {Component} from 'react'
-import AtomView from "../ui/AtomView"
+import AtomView from "./AtomView"
 import {obj} from "../../util"
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'

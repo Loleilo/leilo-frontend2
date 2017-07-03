@@ -2,8 +2,8 @@ import React from 'react'
 import {Component} from 'react'
 import {connect} from 'react-redux'
 import {SLOW_POLL_INTERVAL} from "../../consts";
-import MountSensor from "./MountSensor";
-import DashboardView from "../ui/DashboardView";
+import MountSensor from "../util/MountSensor";
+import DashboardView from "./DashboardView";
 import WidgetConnector from "../widgets/WidgetConnector";
 import {arr, obj} from "../../util";
 import * as Dashboard from '../../actions/dashboard'

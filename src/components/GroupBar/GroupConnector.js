@@ -3,8 +3,8 @@ import {Component} from 'react'
 import {obj} from "../../util";
 import * as groups from "../../actions/groups";
 import {MEDIUM_POLL_INTERVAL, SLOW_POLL_INTERVAL} from "../../consts";
-import GroupView from "../ui/GroupView";
-import AtomConnector from "./AtomConnector";
+import GroupView from "./GroupView";
+import AtomConnector from "../AtomBar/AtomConnector";
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 

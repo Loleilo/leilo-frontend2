@@ -1,5 +1,5 @@
 import React from 'react'
-import loadingWrapper from "../logic/loadingWrapper";
+import loadingWrapper from "../util/loadingWrapper";
 import View from "react-flexbox";
 
 export default function (props) {

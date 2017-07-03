@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import MountSensor from "../../logic/MountSensor";
+import MountSensor from "../../util/MountSensor";
 import DigitalWidgetView from "./DigitalWidgetView";
 import {obj} from "../../../util";
 import * as Atoms from "../../../actions/atoms"

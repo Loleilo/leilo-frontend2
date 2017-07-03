@@ -1,9 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import AppBarView from "./ui/AppBarView";
+import AppBarView from "./Appbar/AppBarView";
 import * as user from '../actions/user'
 import {Component} from 'react'
-import DrawerConnector from "./logic/DrawerConnector";
+import DrawerConnector from "./Drawer/DrawerConnector";
 import ContentRouter from "./ContentRouter";
 import {withRouter} from "react-router-dom";
 

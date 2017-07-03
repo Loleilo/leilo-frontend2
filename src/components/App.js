@@ -1,11 +1,11 @@
 import React from 'react'
 import '../global.css'
-import LoginFormConnector from "./logic/LoginFormConnector"
+import LoginFormConnector from "./LoginForm/LoginFormConnector"
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import MainApp from './MainApp'
 import {connect} from 'react-redux'
 import {LOGGED_IN} from "../reducers/states";
-import MountSensor from "./logic/MountSensor";
+import MountSensor from "./util/MountSensor";
 import * as user from '../actions/user';
 import {SLOW_POLL_INTERVAL} from "../consts";
 import {Router} from "react-router-dom";

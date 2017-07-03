@@ -1,10 +1,10 @@
 import React from 'react'
-import GroupConnector from "./GroupConnector";
+import GroupConnector from "../GroupBar/GroupConnector";
 import {Route, Switch} from "react-router-dom";
 import {connect} from 'react-redux'
 import * as user from "../../actions/user";
 import {SLOW_POLL_INTERVAL} from "../../consts";
-import GroupPageView from "../ui/GroupPageView";
+import GroupPageView from "./GroupPageView";
 
 function GroupPageConnector(props) {
     const routes = props.groups.value ? props.groups.value.map((group) => {
