@@ -1,4 +1,4 @@
-import {Card, CardTitle} from "material-ui/Card";
+import {CardTitle} from "material-ui/Card";
 import React from "react";
 import PropTypes from 'prop-types'
 import {FormattedRelative} from 'react-intl'

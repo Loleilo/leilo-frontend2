@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import MountSensor from "../../logic/MountSensor";
 import DigitalWidgetView from "./DigitalWidgetView";
-import {arr} from "../../../util";
+import {obj} from "../../../util";
 import * as Atoms from "../../../actions/atoms"
 import {FAST_POLL_INTERVAL} from "../../../consts";
 import PropTypes from 'prop-types'
@@ -12,8 +12,8 @@ function DigitalWidgetConnector(props) {
     return <MountSensor componentWillMount={props.loadAtomValues} componentWillUnmount={props.unloadAtomValues}>
         <DigitalWidgetView
             title={actualConfig.title}
-            lastUpdate={new Date(arr(props, "heartbeat", "value"))}
-            value={actualConfig.mapping[arr(props, "atom", "value")]}
+            lastUpdate={new Date(obj(props, "heartbeat", "value"))}
+            value={actualConfig.mapping[obj(props, "atom", "value")]}
         />
     </MountSensor>
 }
@@ -21,16 +21,14 @@ function DigitalWidgetConnector(props) {
 function mapStateToProps(state, props) {
     const actualConfig = props.config;
     return {
-        atom: arr(state.entities.atoms.atomValues, actualConfig.groupID, actualConfig.atomID),
-        heartbeat: arr(state.entities.atoms.atomValues, actualConfig.groupID, actualConfig.heartbeatID),
+        atom: obj(state.entities.atoms.atomValues, actualConfig.groupID, actualConfig.atomID),
+        heartbeat: obj(state.entities.atoms.atomValues, actualConfig.groupID, actualConfig.heartbeatID),
     }
 }
 
 function mapDispatchToProps(dispatch, props) {
     const actualConfig = props.config;
-    const atomSelector = {
-        group_id: actualConfig.groupID,
-    };
+
     return {
         loadAtomValues: () => {
             dispatch(Atoms.pollValueStart(FAST_POLL_INTERVAL, {

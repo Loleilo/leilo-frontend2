@@ -11,7 +11,7 @@ import KeyboardArrowDown from 'material-ui-icons/KeyboardArrowDown'
 import KeyboardArrowUp from 'material-ui-icons/KeyboardArrowUp'
 import loadingWrapper from "../logic/loadingWrapper";
 import PropTypes from 'prop-types'
-import {arr} from "../../util";
+import {obj} from "../../util";
 import ListView from "./ListView";
 
 const GroupView = ({
@@ -38,7 +38,7 @@ const GroupView = ({
             <IconButton
                 onClick={settings.onOpen}
                 tooltip="Sharing settings"
-                disabled={!arr(permissions, "value", "config")}
+                disabled={!obj(permissions, "value", "config")}
             ><Settings/></IconButton>}
         </View>
         {show.atoms &&

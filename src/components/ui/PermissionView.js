@@ -3,15 +3,15 @@ import RaisedButton from 'material-ui/RaisedButton'
 import React from "react";
 import PropTypes from 'prop-types'
 import {PERM_CONFIG, PERM_READ, PERM_WRITE} from "../../consts";
-import {arr} from "../../util";
+import {obj} from "../../util";
 
 const PermissionView = ({
                             value,
                             onSubmit,
                         }) => {
-    const ReadCompSelect = arr(value, "read") ? RaisedButton : FlatButton;
-    const WriteCompSelect = arr(value, "write") ? RaisedButton : FlatButton;
-    const ConfigCompSelect = arr(value, "config") ? RaisedButton : FlatButton;
+    const ReadCompSelect = obj(value, "read") ? RaisedButton : FlatButton;
+    const WriteCompSelect = obj(value, "write") ? RaisedButton : FlatButton;
+    const ConfigCompSelect = obj(value, "config") ? RaisedButton : FlatButton;
     const generalProps = {
         disableTouchRipple: onSubmit === undefined,
         primary: true,

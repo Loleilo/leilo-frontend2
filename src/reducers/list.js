@@ -1,7 +1,7 @@
 import {createFetchSyncReducer} from "./sync";
-import {arr} from "../util";
+import {obj} from "../util";
 export function createFetchListReducer(objName, actionMapper = (action, newState, oldState) => {
-    newState[action.payload.uuid] = createFetchSyncReducer(objName)(arr(oldState,action.payload.uuid), action);
+    newState[action.payload.uuid] = createFetchSyncReducer(objName)(obj(oldState,action.payload.uuid), action);
 }) {
     return function (state = {}, action) {
         const splitType = action.type.split('_');

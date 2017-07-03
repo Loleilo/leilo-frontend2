@@ -1,7 +1,7 @@
 import React from 'react'
 import {Component} from 'react'
 import AtomView from "../ui/AtomView"
-import {arr} from "../../util"
+import {obj} from "../../util"
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import * as atoms from "../../actions/atoms";
@@ -91,7 +91,7 @@ class AtomConnector extends Component {
                 onEditChange: this.handleValueChange,
                 onEditBegin: this.handleEditBegin,
                 onSubmit: this.handleValueSubmit,
-                displayState: arr(props.permissions, "value", "read") ? (this.state.editing ? "EDIT VIEW" : "VIEW") : "EDIT",
+                displayState: obj(props.permissions, "value", "read") ? (this.state.editing ? "EDIT VIEW" : "VIEW") : "EDIT",
             }}
             name={{
                 ...props.name,
@@ -110,9 +110,9 @@ class AtomConnector extends Component {
 
 function mapStateToProps(state, props) {
     return {
-        name: arr(state.entities.atoms.atomNames, props.groupID, props.atomID),
-        value: arr(state.entities.atoms.atomValues, props.groupID, props.atomID),
-        permissions: arr(state.entities.atoms.atomPerms, props.groupID, props.atomID),
+        name: obj(state.entities.atoms.atomNames, props.groupID, props.atomID),
+        value: obj(state.entities.atoms.atomValues, props.groupID, props.atomID),
+        permissions: obj(state.entities.atoms.atomPerms, props.groupID, props.atomID),
     };
 }
 

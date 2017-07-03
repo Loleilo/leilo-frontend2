@@ -3,7 +3,7 @@ import actionTemplate from './action'
 import {API_ENDPOINT, CLIENT_API_VERSION} from "../consts";
 import SyncReturnError from "../errors/SyncReturnError";
 import createCatcher from '../errors/errorCatcher'
-import {WRITING} from "../reducers/states";
+import {READING, WRITING} from "../reducers/states";
 
 export const PENDING = "PENDING";
 export const FULFILLED = "FULFILLED";
@@ -56,8 +56,9 @@ export function syncActionTemplate(objName, apiCall, action = FETCH, customMappe
         return function (dispatch, getState) {
             const mappedParams = customMapper(undefined, params);
             const state = stateMapper(getState, mappedParams);
-            if (state.state === PENDING || state.state === WRITING)
+            if (state.syncState === READING || state.syncState === WRITING) {
                 return;
+            }
             dispatch(actionTemplate(action, objName, PENDING, mappedParams));
             postPromise(apiCall, params).then((result) => {
                 dispatch(actionTemplate(action, objName, FULFILLED, customMapper(result, params)))

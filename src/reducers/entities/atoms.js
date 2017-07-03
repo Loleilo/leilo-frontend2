@@ -1,12 +1,12 @@
 import {combineReducers} from 'redux'
 import {createFetchListReducer} from '../list'
 import {createFetchSyncReducer} from "../sync";
-import { arr} from "../../util";
+import { obj} from "../../util";
 
 function createMapper(reducer) {
     return function (action, newState, oldState) {
-        newState[action.payload.groupUUID] = arr(newState,action.payload.groupUUID);
-        newState[action.payload.groupUUID][action.payload.atomUUID] = reducer(arr(oldState, action.payload.groupUUID, action.payload.atomUUID), action);
+        newState[action.payload.groupUUID] = obj(newState,action.payload.groupUUID);
+        newState[action.payload.groupUUID][action.payload.atomUUID] = reducer(obj(oldState, action.payload.groupUUID, action.payload.atomUUID), action);
     }
 }
 

@@ -4,7 +4,7 @@ export function createFetchSyncReducer(objName, valueReducer = (state, action) =
     return function (state, action) {
         state = {
             loaded: false,
-            syncState: states.READING,
+            syncState: states.READY,
             polling: 0,
             pollInterval: Number.POSITIVE_INFINITY,
             ...state,
@@ -49,9 +49,9 @@ export function createFetchSyncReducer(objName, valueReducer = (state, action) =
 export function createPushFetchSyncReducer(objName, valueReducer = (state, action) => action.payload.value) {
     return function (state = {
         loaded: false,
-        syncState: states.READING,
+        syncState: states.READY,
         polling: 0,
-        pollInterval: Math.POSITIVE_INFINITY,
+        pollInterval: Number.POSITIVE_INFINITY,
     }, action) {
         switch (action.type) {
             case `FETCH_${objName}_PENDING`:
@@ -76,12 +76,14 @@ export function createPushFetchSyncReducer(objName, valueReducer = (state, actio
             case `PUSH_${objName}_PENDING`:
                 return {
                     ...state,
+                    value: valueReducer(state.value, action),
                     syncState: states.WRITING,
                 };
             case `PUSH_${objName}_FULFILLED`:
                 return {
                     ...state,
                     syncState: states.READY,
+                    value: valueReducer(state.value, action),
                     loaded: true,
                 };
             case `PUSH_${objName}_REJECTED`:
@@ -93,13 +95,13 @@ export function createPushFetchSyncReducer(objName, valueReducer = (state, actio
             case `POLL_${objName}_START`:
                 return {
                     ...state,
-                    polling: state.polling + 1,
-                    pollInterval: Math.min(action.pollInterval, state.pollInterval),
+                    polling: state.polling ? state.polling + 1 : 1,
+                    pollInterval: Math.min(state.pollInterval, action.payload.pollInterval),
                 };
             case `POLL_${objName}_STOP`:
                 return {
                     ...state,
-                    polling: state.polling - 1,
+                    polling: state.polling && state.polling > 0 ? state.polling - 1 : 0,
                 };
             default:
                 return state;

@@ -1,6 +1,6 @@
 import  React from "react";
 import {Component} from 'react'
-import {arr} from "../../util";
+import {obj} from "../../util";
 import * as groups from "../../actions/groups";
 import {MEDIUM_POLL_INTERVAL, SLOW_POLL_INTERVAL} from "../../consts";
 import GroupView from "../ui/GroupView";
@@ -8,6 +8,7 @@ import AtomConnector from "./AtomConnector";
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 
+//todo replace with function using MountSensor
 class GroupConnector extends Component {
     constructor(props) {
         super(props);
@@ -99,9 +100,9 @@ GroupConnector.propTypes = {
 
 function mapStateToProps(state, props) {
     return {
-        name: arr(state.entities.groups.groupNames, props.groupID),
-        permissions: arr(state.entities.groups.groupPerms, props.groupID),
-        atoms: arr(state.entities.groups.groupAtomsList, props.groupID),
+        name: obj(state.entities.groups.groupNames, props.groupID),
+        permissions: obj(state.entities.groups.groupPerms, props.groupID),
+        atoms: obj(state.entities.groups.groupAtomsList, props.groupID),
     }
 }
 

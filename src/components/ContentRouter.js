@@ -1,6 +1,6 @@
 import {Route} from 'react-router-dom'
 import React from 'react'
-import Dashboard from "./ui/Dashboard";
+import Dashboard from "./logic/DashboardConnector";
 import GroupPageConnector from "./logic/GroupPageConnector";
 
 export default function ContentRouter() {
