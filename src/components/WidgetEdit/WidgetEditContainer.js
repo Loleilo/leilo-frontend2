@@ -49,6 +49,7 @@ export default class AddWidgetContainer extends Component {
         this.handleSelectedWidgetChange = (value) => this.setState({
             config: {
                 ...this.state.config,
+                size: widgetList[value].size,
                 widgetComponent: value,
             }
         });

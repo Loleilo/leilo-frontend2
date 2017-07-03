@@ -56,7 +56,12 @@ export function syncActionTemplate(objName, apiCall, action = FETCH, customMappe
         return function (dispatch, getState) {
             const mappedParams = customMapper(undefined, params);
             const state = stateMapper(getState, mappedParams);
-            if (state.syncState === READING || state.syncState === WRITING) {
+
+            //todo fix this later
+            if (action === FETCH && ( state.syncState === WRITING || state.syncState === READING)) {
+                return;
+            }
+            if (action === PUSH && state.syncState === WRITING ) {
                 return;
             }
             dispatch(actionTemplate(action, objName, PENDING, mappedParams));

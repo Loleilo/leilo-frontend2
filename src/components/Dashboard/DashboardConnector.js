@@ -46,6 +46,16 @@ class DashboardConnector extends Component {
                 ...dashboard.widgets,
             };
             widgets[currID] = config;
+            console.log(JSON.stringify({
+                ...dashboard,
+                layout: arr(dashboard, "layout").concat([{
+                    x: 0, y: 0,
+                    ...config.size,
+                    i: currID.toString(),
+                }]),
+                widgets: widgets,
+                currID: currID + 1,
+            }));
             this.props.pushDashboard({
                 ...dashboard,
                 layout: arr(dashboard, "layout").concat([{
@@ -104,11 +114,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         loadDashboard: () => {
-            console.log("load");
             dispatch(Dashboard.pollDashboardStart(SLOW_POLL_INTERVAL))
         },
         unloadDashboard: () => {
-            console.log("unload");
             dispatch(Dashboard.pollDashboardStop())
         },
         pushDashboard: (dashboard) => {

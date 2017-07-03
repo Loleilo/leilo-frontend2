@@ -5,25 +5,24 @@ import MenuItem from 'material-ui/MenuItem'
 
 function SelectView(props) {
     return <SelectField
+        floatingLabelText={props.label}
+        disabled={props.disabled}
         value={props.selected.value}
         onChange={(event, index, value)=>props.selected.onChange(value)}
-        disabled={props.disabled}
     >
-        {props.selections.map((item) => {
+        {props.selections && props.selections.map((item) => {
             return <MenuItem
+                key={item.value}
                 value={item.value}
                 primaryText={item.displayName}
                 leftIcon={item.icon}
-            />
+            >{item.content}</MenuItem>
         })}
     </SelectField>
 }
 
 SelectView.propTypes = {
-    selections: PropTypes.arrayOf({
-        value: PropTypes.any,
-        displayName: PropTypes.string,
-    }),
+    selections: PropTypes.array,
     selected: PropTypes.shape({
         value: PropTypes.any,
         onChange: PropTypes.func,
