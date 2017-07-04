@@ -40,6 +40,8 @@ function getContent(props) {
                     onChange={props.onColorChanged}
                 />
             </div>;
+        default:
+            return "Error!"
     }
 }
 

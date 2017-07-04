@@ -48,7 +48,6 @@ class GroupConnector extends Component {
 
     componentWillUnmount() {
         this.props.unloadName();
-        this.props.unloadPerms();
     }
 
     render() {

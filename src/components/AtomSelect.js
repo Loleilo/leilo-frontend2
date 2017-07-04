@@ -3,16 +3,10 @@ import {Component} from 'react'
 import {connect} from 'react-redux'
 import {obj} from "../util";
 import * as atoms from "../actions/atoms";
-import {MEDIUM_POLL_INTERVAL, SLOW_POLL_INTERVAL} from "../consts";
 import * as groups from "../actions/groups";
-import MountSensor from "./util/MountSensor";
 import SelectView from "./util/SelectView";
 
 class AtomSelect extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     componentWillMount() {
         if (this.props.groupID)
             this.props.fetchAtoms();

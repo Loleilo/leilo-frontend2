@@ -3,7 +3,6 @@ import {Component} from 'react'
 import PropTypes from 'prop-types'
 import AddWidgetView from "./WidgetEditView";
 import widgetList from "../widgets/list"
-import {red600} from "material-ui/styles/colors";
 import {obj} from "../../util";
 
 export default class AddWidgetContainer extends Component {

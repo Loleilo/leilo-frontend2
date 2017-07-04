@@ -65,7 +65,7 @@ class AtomConnector extends Component {
 
     componentWillMount() {
         this.props.loadName();
-            this.props.fetchPerms();
+        this.props.fetchPerms();
     }
 
     componentWillUnmount() {
