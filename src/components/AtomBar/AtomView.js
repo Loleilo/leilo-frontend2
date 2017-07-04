@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Card} from 'material-ui/Card'
 import TextField from 'material-ui/TextField'
-import PermissionView from '../util/PermissionView'
 import Settings from 'material-ui-icons/Settings'
 import IconButton from 'material-ui/IconButton'
 import Dialog from 'material-ui/Dialog'
@@ -82,9 +81,6 @@ const AtomView = ({
                     </View>
                     <View column/>
                     <View column auto style={{...rightContent, ...rightSelf}}>
-                        {show.permissions && <PermissionView {...permissions}/>}
-                    </View>
-                    <View column auto style={{...rightContent, ...rightSelf}}>
                         {show.settings && value.syncState === WRITING ? <CircularProgress size={30}/> :
                             <IconButton
                                 onClick={settings.addOpen}
@@ -109,7 +105,6 @@ const AtomView = ({
 AtomView.propTypes = {
     show: PropTypes.shape({
         value: PropTypes.bool,
-        permissions: PropTypes.bool,
         settings: PropTypes.bool,
     }).isRequired,
     value: PropTypes.shape({
@@ -123,7 +118,6 @@ AtomView.propTypes = {
     name: PropTypes.shape({
         value: PropTypes.string,
     }).isRequired,
-    permissions: PropTypes.object.isRequired,
     settings: PropTypes.shape({
         open: PropTypes.bool,
         addOpen: PropTypes.func,

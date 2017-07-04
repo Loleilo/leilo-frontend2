@@ -30,10 +30,6 @@ class AtomConnector extends Component {
             });
         };
 
-
-        this.handlePermissionsSubmit = () => {
-        };
-
         this.handleValueSubmit = (event) => {
             event.preventDefault();
             if (!this.state.atomSubmitValue) {
@@ -69,15 +65,11 @@ class AtomConnector extends Component {
 
     componentWillMount() {
         this.props.loadName();
-        if (this.props.show.permissions)
-            this.props.loadPerms();
-        else
             this.props.fetchPerms();
     }
 
     componentWillUnmount() {
         this.props.unloadName();
-        this.props.unloadPerms();
         this.props.unloadValue();
     }
 
@@ -139,12 +131,6 @@ function mapDispatchToProps(dispatch, props) {
             dispatch(atoms.pushValue({...atomSelector, value: value}))
         },
 
-        loadPerms: () => {
-            dispatch(atoms.pollPermsStart(SLOW_POLL_INTERVAL, atomSelector))
-        },
-        unloadPerms: () => {
-            dispatch(atoms.pollPermsStop(atomSelector))
-        },
         fetchPerms: () => {
             dispatch(atoms.fetchPerms(atomSelector))
         },
@@ -155,7 +141,6 @@ function mapDispatchToProps(dispatch, props) {
 const connected = connect(mapStateToProps, mapDispatchToProps)(AtomConnector);
 
 connected.propTypes = {
-    show: PropTypes.object.isRequired,
     groupID: PropTypes.string.isRequired,
     atomID: PropTypes.string.isRequired
 };

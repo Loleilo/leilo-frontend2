@@ -3,7 +3,6 @@ import {infoRow, leftContent, leftSelf, rightContent, rightSelf} from "../../sty
 import Card from "material-ui/Card";
 import Dialog from 'material-ui/Dialog'
 import IconButton from 'material-ui/IconButton'
-import PermissionView from "../util/PermissionView";
 import Settings from 'material-ui-icons/Settings'
 import MountSensor from "../util/MountSensor";
 import View from "react-flexbox";
@@ -30,9 +29,6 @@ const GroupView = ({
             {nameContent}
         </View>
         <View column/>
-        <View column auto style={{...rightContent, ...rightSelf}}>
-            {show.permissions && <PermissionView {...permissions}/>}
-        </View>
         <View column auto style={{...rightContent, ...rightSelf}}>
             {show.settings &&
             <IconButton
@@ -90,7 +86,6 @@ const GroupView = ({
 
 GroupView.propTypes = {
     show: PropTypes.shape({
-        permissions: PropTypes.bool,
         settings: PropTypes.bool,
         atoms: PropTypes.bool,
         removeCardStyle: PropTypes.bool,
@@ -103,7 +98,6 @@ GroupView.propTypes = {
     name: PropTypes.shape({
         value: PropTypes.string,
     }).isRequired,
-    permissions: PropTypes.object,
     settings: PropTypes.shape({
         open: PropTypes.bool,
         addOpen: PropTypes.func,

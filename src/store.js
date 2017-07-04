@@ -10,8 +10,13 @@ export const history = createHistory();
 
 const reduxRouter = syncHistory(history);
 
-const middleware = applyMiddleware(reduxRouter, thunk, logger);
+let middleware2 = [reduxRouter, thunk,];
+if (process.env.NODE_ENV !== 'production')
+    middleware2 = [reduxRouter, thunk, logger];
 
-//todo remove when development is done
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-export default createStore(reducer, composeEnhancers( middleware));
+const middleware = applyMiddleware(...middleware2);
+
+let composeEnhancers=(input)=>{return input};
+if (process.env.NODE_ENV !== 'production')
+    composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+export default createStore(reducer, composeEnhancers(middleware));

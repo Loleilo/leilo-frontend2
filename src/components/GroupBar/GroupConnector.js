@@ -33,9 +33,6 @@ class GroupConnector extends Component {
             });
         };
 
-        this.handlePermissionsSubmit = () => {
-        };
-
         this.handleExpandClicked = () => {
             this.setState({
                 expanded: !this.state.expanded,
@@ -45,10 +42,8 @@ class GroupConnector extends Component {
 
     componentWillMount() {
         this.props.loadName();
-        if (this.props.show.permissions)
-            this.props.loadPerms();
-        else
-            this.props.fetchPerms();
+
+        this.props.fetchPerms();
     }
 
     componentWillUnmount() {
@@ -81,7 +76,6 @@ class GroupConnector extends Component {
                 expanded: this.state.expanded,
             }}
             name={this.props.name}
-            permissions={this.props.permissions}
             settings={{
                 open: this.state.settingsOpen,
                 addOpen: this.handleSettingsOpen,
@@ -118,12 +112,6 @@ function mapDispatchToProps(dispatch, props) {
             dispatch(groups.pollNameStop(groupSelector))
         },
 
-        loadPerms: () => {
-            dispatch(groups.pollPermsStart(SLOW_POLL_INTERVAL, groupSelector))
-        },
-        unloadPerms: () => {
-            dispatch(groups.pollPermsStop(groupSelector))
-        },
         fetchPerms: () => {
             dispatch(groups.fetchPerms(groupSelector));
         },
