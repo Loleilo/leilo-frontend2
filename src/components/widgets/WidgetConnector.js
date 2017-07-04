@@ -16,7 +16,11 @@ class WidgetConnector extends Component {
 
     render() {
         const props = this.props;
-        let WidgetComponent = obj(WidgetList, props.config.widgetComponent);
+        //todo fix this custyness
+        let WidgetComponent = props.config;
+        if(!WidgetComponent)
+            return null;
+        WidgetComponent=obj(WidgetList, props.config.widgetComponent);
         if(!WidgetComponent)
             return null;
         WidgetComponent=WidgetComponent.widget;
