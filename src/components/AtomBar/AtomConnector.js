@@ -101,7 +101,7 @@ class AtomConnector extends Component {
             }}
             settings={{
                 open: this.state.dialogOpen,
-                onOpen: this.handleSettingsOpen,
+                addOpen: this.handleSettingsOpen,
                 onClose: this.handleSettingsClose,
             }}
             show={this.props.show}/>

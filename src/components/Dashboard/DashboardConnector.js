@@ -12,7 +12,8 @@ class DashboardConnector extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            addDialogOpen: false,
+            configDialogOpen: false,
+            currConfigWidget: undefined,
         };
 
         this.initHandlers();
@@ -21,23 +22,26 @@ class DashboardConnector extends Component {
     initHandlers() {
         this.openAddDialog = () => {
             this.setState({
-                addDialogOpen: true,
+                configDialogOpen: true,
             });
         };
-        this.closeAddDialog = () => {
+        this.closeDialog = () => {
             this.setState({
-                addDialogOpen: false,
+                configDialogOpen: false,
+                currConfigWidget: undefined,
             });
         };
         this.handleChangeSubmit = (id, config) => {
             const dashboard = obj(this.props.dashboard, "value");
+            const widgets = {
+                ...dashboard.widgets,
+            };
+            widgets[id] = config;
             this.props.pushDashboard({
                 ...dashboard,
-                widgets: {
-                    ...dashboard.widgets,
-                    id: config,
-                },
+                widgets: widgets,
             });
+            this.closeDialog();
         };
         this.handleAddSubmit = (config) => {
             const dashboard = obj(this.props.dashboard, "value");
@@ -46,16 +50,6 @@ class DashboardConnector extends Component {
                 ...dashboard.widgets,
             };
             widgets[currID] = config;
-            console.log(JSON.stringify({
-                ...dashboard,
-                layout: arr(dashboard, "layout").concat([{
-                    x: 0, y: 0,
-                    ...config.size,
-                    i: currID.toString(),
-                }]),
-                widgets: widgets,
-                currID: currID + 1,
-            }));
             this.props.pushDashboard({
                 ...dashboard,
                 layout: arr(dashboard, "layout").concat([{
@@ -66,13 +60,31 @@ class DashboardConnector extends Component {
                 widgets: widgets,
                 currID: currID + 1,
             });
-            this.closeAddDialog();
+            this.closeDialog();
+        };
+        this.handleDelete = (id) => {
+            const dashboard = obj(this.props.dashboard, "value");
+            const widgets = {
+                ...dashboard.widgets,
+            };
+            widgets[id] = undefined;
+            this.props.pushDashboard({
+                ...dashboard,
+                widgets: widgets,
+            });
         };
         this.handleLayoutChange = (layout) => {
             const dashboard = obj(this.props.dashboard, "value");
             this.props.pushDashboard({
                 ...dashboard,
                 layout: layout,
+            });
+        };
+        this.openEditDialog = (id) => {
+            console.log("id;" + id);
+            this.setState({
+                currConfigWidget: id,
+                configDialogOpen: true,
             });
         };
     }
@@ -90,15 +102,22 @@ class DashboardConnector extends Component {
                 }}
                 widgets={dashboard.widgets && Object.keys(dashboard.widgets).map((id) => {
                     return <div
-                        key={id}><WidgetConnector
-                        config={dashboard.widgets[id]}
-                    /></div>
+                        key={id}>
+                        <WidgetConnector
+                            config={dashboard.widgets[id]}
+                            onDeleteClicked={() => this.handleDelete(id)}
+                            onSettingsClicked={() => this.openEditDialog(id)}
+                        />
+                    </div>
                 })}
-                add={{
-                    open: this.state.addDialogOpen,
-                    onOpen: this.openAddDialog,
-                    onClose: this.closeAddDialog,
-                    onSubmit: this.handleAddSubmit,
+                configEdit={{
+                    open: this.state.configDialogOpen,
+                    addOpen: this.openAddDialog,
+                    onClose: this.closeDialog,
+                    onSubmit: this.state.currConfigWidget ?
+                        (config) => this.handleChangeSubmit(this.state.currConfigWidget, config) :
+                        this.handleAddSubmit,
+                    initConfig: obj(dashboard.widgets,this.state.currConfigWidget),
                 }}
             />
         </MountSensor>

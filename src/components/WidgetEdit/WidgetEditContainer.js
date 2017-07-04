@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import AddWidgetView from "./WidgetEditView";
 import widgetList from "../widgets/list"
 import {red600} from "material-ui/styles/colors";
+import {obj} from "../../util";
 
 export default class AddWidgetContainer extends Component {
     static PropTypes = {
@@ -17,19 +18,13 @@ export default class AddWidgetContainer extends Component {
             stepIndex: 0,
             config: props.initConfig || {},
         };
-
         this.initHandlers();
     }
 
     initHandlers() {
         this.handleNextStep = () => {
             if (this.state.stepIndex === 2)
-                this.props.onSubmit({
-                    ...this.state.config,
-                    widgetProps: {
-                        lineColor: red600,
-                    },
-                });
+                this.props.onSubmit(this.state.config);
             else
                 this.setState({
                     stepIndex: this.state.stepIndex + 1,
@@ -53,6 +48,16 @@ export default class AddWidgetContainer extends Component {
                 widgetComponent: value,
             }
         });
+
+        this.handleColorChange = (color) => this.setState({
+            config: {
+                ...this.state.config,
+                widgetProps: {
+                    ...this.state.config.widgetProps,
+                    lineColor: color,
+                }
+            }
+        });
     }
 
     renderConfigView() {
@@ -74,6 +79,8 @@ export default class AddWidgetContainer extends Component {
             onPrevStep={this.handlePrevStep}
             onNextStep={this.handleNextStep}
             nextDisabled={this.state.stepIndex === 0 ? (!this.state.config.widgetComponent) : false}
+            onColorChanged={this.handleColorChange}
+            color={obj(this.state.config,'widgetProps').lineColor}
         />
     };
 }

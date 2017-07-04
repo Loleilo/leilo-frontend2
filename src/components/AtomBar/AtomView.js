@@ -87,7 +87,7 @@ const AtomView = ({
                     <View column auto style={{...rightContent, ...rightSelf}}>
                         {show.settings && value.syncState === WRITING ? <CircularProgress size={30}/> :
                             <IconButton
-                                onClick={settings.onOpen}
+                                onClick={settings.addOpen}
                                 tooltip={permissions.value.config ? "Sharing settings" : "Not enough perms"}
                                 disabled={!permissions.value.config}
                             ><Settings/></IconButton>}
@@ -126,7 +126,7 @@ AtomView.propTypes = {
     permissions: PropTypes.object.isRequired,
     settings: PropTypes.shape({
         open: PropTypes.bool,
-        onOpen: PropTypes.func,
+        addOpen: PropTypes.func,
         onClose: PropTypes.func,
     }).isRequired,
 };

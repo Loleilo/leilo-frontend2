@@ -84,7 +84,7 @@ class GroupConnector extends Component {
             permissions={this.props.permissions}
             settings={{
                 open: this.state.settingsOpen,
-                onOpen: this.handleSettingsOpen,
+                addOpen: this.handleSettingsOpen,
                 onClose: this.handleSettingsClose,
             }}
         />

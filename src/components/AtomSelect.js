@@ -13,8 +13,13 @@ class AtomSelect extends Component {
         super(props);
     }
 
-    componentDidUpdate(prevProps){
-        if(prevProps.groupID!==this.props.groupID)
+    componentWillMount() {
+        if (this.props.groupID)
+            this.props.fetchAtoms();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.groupID !== this.props.groupID)
             this.props.fetchAtoms();
     }
 
@@ -23,10 +28,10 @@ class AtomSelect extends Component {
         return <SelectView
             label={props.label}
             selections={props.atoms.value && props.atoms.value.map((atom) => {
-                const dispName=obj(props.names, atom).value;
+                const dispName = obj(props.names, atom).value;
                 return {
                     value: atom,
-                    displayName: dispName?dispName:"Loading...",
+                    displayName: dispName ? dispName : "Loading...",
                     content: <MountSensor
                         componentWillMount={() => props.loadName(atom)}
                         componentWillUnmount={() => props.unloadName(atom)}

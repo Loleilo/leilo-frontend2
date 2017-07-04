@@ -7,7 +7,7 @@ import ContentAdd from 'material-ui-icons/Add'
 import PropTypes from 'prop-types'
 import {obj} from "../../util";
 import Dialog from "material-ui/Dialog";
-import AddWidgetContainer from "../WidgetEdit/WidgetEditContainer";
+import EditWidgetContainer from "../WidgetEdit/WidgetEditContainer";
 
 let Grid = ReactGridLayout;
 Grid = WidthProvider(Grid);
@@ -21,11 +21,12 @@ function Dashboard(props) {
             cols={GRID_COLS}
             rowHeight={GRID_ROW_HEIGHT}
             className="layout"
+            draggableCancel={".cancel-drag,"}
         >
             {props.widgets}
         </Grid>
         <FloatingActionButton
-            onTouchTap={props.add.onOpen}
+            onTouchTap={props.configEdit.addOpen}
             style={{
                 position: "fixed",
                 bottom: "20px", //TODO comply with material design standards
@@ -33,9 +34,10 @@ function Dashboard(props) {
             }}
         ><ContentAdd/></FloatingActionButton>
 
-        <Dialog open={props.add.open} onRequestClose={props.add.onClose}>
-            <AddWidgetContainer
-                onSubmit={props.add.onSubmit}
+        <Dialog open={props.configEdit.open} onRequestClose={props.configEdit.onClose}>
+            <EditWidgetContainer
+                onSubmit={props.configEdit.onSubmit}
+                initConfig={props.configEdit.initConfig}
             />
         </Dialog>
     </div>;
@@ -46,11 +48,12 @@ Dashboard.propTypes = {
         value: PropTypes.array,
         onChange: PropTypes.func,
     }),
-    add: PropTypes.shape({
+    configEdit: PropTypes.shape({
         open: PropTypes.bool,
-        onOpen: PropTypes.func,
+        addOpen: PropTypes.func,
         onClose: PropTypes.func,
         onSubmit: PropTypes.func,
+        initConfig: PropTypes.any,
     }),
     widgets: PropTypes.array,
 };

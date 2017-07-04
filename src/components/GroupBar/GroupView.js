@@ -36,7 +36,7 @@ const GroupView = ({
         <View column auto style={{...rightContent, ...rightSelf}}>
             {show.settings &&
             <IconButton
-                onClick={settings.onOpen}
+                onClick={settings.addOpen}
                 tooltip="Sharing settings"
                 disabled={!obj(permissions, "value", "config")}
             ><Settings/></IconButton>}
@@ -106,7 +106,7 @@ GroupView.propTypes = {
     permissions: PropTypes.object,
     settings: PropTypes.shape({
         open: PropTypes.bool,
-        onOpen: PropTypes.func,
+        addOpen: PropTypes.func,
         onClose: PropTypes.func,
     }).isRequired,
 };
