@@ -1,5 +1,6 @@
 import SwitchWidget from './switch'
-
-export default {
+const widgetList = {
     "SwitchWidget": SwitchWidget,
-}
+};
+
+export default widgetList;

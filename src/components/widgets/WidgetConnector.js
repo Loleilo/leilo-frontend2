@@ -16,16 +16,18 @@ class WidgetConnector extends Component {
 
     render() {
         const props = this.props;
+
         //todo fix this custyness
         let WidgetComponent = props.config;
-        if(!WidgetComponent)
+        if (!WidgetComponent)
             return null;
-        WidgetComponent=obj(WidgetList, props.config.widgetComponent);
-        if(!WidgetComponent)
+        WidgetComponent = WidgetList ? WidgetList[props.config.widgetComponent] : undefined;
+        if (!WidgetComponent)
             return null;
-        WidgetComponent=WidgetComponent.widget;
-        if(!WidgetComponent)
+        WidgetComponent = WidgetComponent.widget;
+        if (!WidgetComponent)
             return null;
+
         return <WidgetView
             {...props.config.widgetProps}
             menuID={this.id}
