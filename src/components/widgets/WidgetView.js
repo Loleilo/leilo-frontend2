@@ -19,7 +19,7 @@ function WidgetView(props) {
             width: '3px',
         }}/>}
         {props.children}
-        <ContextMenu id={props.menuID} className=".cancel-drag">
+        <ContextMenu id={props.menuID} className="cancel-drag">
             <Paper >
                 <Menu >
                     <MenuItem

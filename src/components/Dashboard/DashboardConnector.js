@@ -102,7 +102,8 @@ class DashboardConnector extends Component {
                 }}
                 widgets={dashboard.widgets && Object.keys(dashboard.widgets).map((id) => {
                     return <div
-                        key={id}>
+                        key={id}
+                    >
                         <WidgetConnector
                             config={dashboard.widgets[id]}
                             onDeleteClicked={() => this.handleDelete(id)}

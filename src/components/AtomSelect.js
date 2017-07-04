@@ -21,6 +21,10 @@ class AtomSelect extends Component {
     componentDidUpdate(prevProps) {
         if (prevProps.groupID !== this.props.groupID)
             this.props.fetchAtoms();
+        if (prevProps.atoms.value)
+            for (let i = 0; i < this.props.atoms.value.length; i++) {
+                this.props.fetchName(this.props.atoms.value[i])
+            }
     }
 
     render() {
@@ -32,10 +36,6 @@ class AtomSelect extends Component {
                 return {
                     value: atom,
                     displayName: dispName ? dispName : "Loading...",
-                    content: <MountSensor
-                        componentWillMount={() => props.loadName(atom)}
-                        componentWillUnmount={() => props.unloadName(atom)}
-                    />
                 }
             })}
             selected={props}
@@ -53,14 +53,8 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch, props) {
     return {
-        loadName: (atomID) => {
-            dispatch(atoms.pollNameStart(SLOW_POLL_INTERVAL, {
-                group_id: props.groupID,
-                atom_id: atomID,
-            }))
-        },
-        unloadName: (atomID) => {
-            dispatch(atoms.pollNameStop({
+        fetchName: (atomID) => {
+            dispatch(atoms.fetchName({
                 group_id: props.groupID,
                 atom_id: atomID,
             }))

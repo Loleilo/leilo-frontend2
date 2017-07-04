@@ -21,7 +21,8 @@ function Dashboard(props) {
             cols={GRID_COLS}
             rowHeight={GRID_ROW_HEIGHT}
             className="layout"
-            draggableCancel={".cancel-drag,"}
+            draggableCancel={".cancel-drag"}
+            useCSSTransforms={true}
         >
             {props.widgets}
         </Grid>
